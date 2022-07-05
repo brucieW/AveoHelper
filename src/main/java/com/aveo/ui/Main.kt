@@ -49,21 +49,21 @@ fun App() {
                         .fillMaxHeight(),
                     backgroundColor = Color.LightGray
                 ) {
-                    screens.forEach {
+                    screens.forEach { screen ->
                         NavigationRailItem(
-                            selected = currentScreen == it.name,
+                            selected = currentScreen == screen.name,
                             icon = {
                                 Icon(
-                                    imageVector = it.icon,
-                                    contentDescription = it.label
+                                    imageVector = screen.icon,
+                                    contentDescription = screen.label
                                 )
                             },
                             label = {
-                                Text(it.label)
+                                Text(screen.label)
                             },
                             alwaysShowLabel = false,
                             onClick = {
-                                navController.navigate(it.name)
+                                navController.navigate(screen.name)
                             }
                         )
                     }

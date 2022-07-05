@@ -1,0 +1,28 @@
+CREATE TABLE resident (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    unitNumber INTEGER NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    phoneNumber TEXT,
+    mobileNumber TEXT
+);
+
+getResidentById:
+SELECT * FROM resident WHERE id = :id;
+
+getAllResidents:
+SELECT * FROM resident;
+
+getResidentByName:
+SELECT * FROM resident WHERE lastName = :lastName;
+
+getResidentByUnitNumber:
+SELECT * FROM resident WHERE unitNumber = :unitNumber;
+
+insertResident:
+INSERT OR REPLACE INTO resident VALUES (?, ?, ?, ?, ?, ?);
+
+deleteResidentById:
+DELETE FROM resident WHERE id = :id;
+
+

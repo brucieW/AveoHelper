@@ -1,0 +1,20 @@
+CREATE TABLE user (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    userName TEXT NOT NULL,
+    password TEXT NOT NULL
+);
+
+getUserById:
+SELECT * FROM user WHERE id = :id;
+
+getUserByName:
+SELECT * FROM user WHERE userName = :userName;
+
+getAllUsers:
+SELECT * FROM user ORDER BY userName;
+
+insertUser:
+INSERT OR REPLACE INTO user (userName, password) VALUES (?, ?);
+
+deleteUserById:
+DELETE FROM user WHERE id = :id;

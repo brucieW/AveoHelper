@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("kapt") version kotlinVersion
     id("org.jetbrains.compose") version "1.1.0"
+    id("com.squareup.sqldelight") version "1.5.3"
 }
 
 group = "com.aveo"
@@ -47,10 +48,14 @@ dependencies {
     // Expekt : An assertion library for Kotlin
     testImplementation("com.github.theapache64:expekt:1.0.0")
 
+    // SQL DElight
+    implementation("com.squareup.sqldelight:runtime:1.5.3")
+    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
+
     // JUnit
 
     // Kotlinx Coroutines Test : Coroutines support libraries for Kotlin
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")
     testImplementation(compose("org.jetbrains.compose.ui:ui-test-junit4"))
 
     // JUnit : JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
@@ -72,3 +77,9 @@ compose.desktop {
     }
 }
 
+sqldelight {
+    database("AveoDatabase") {
+        packageName = "com.aveo.db"
+        sourceFolders = listOf("sqldelight")
+    }
+}
