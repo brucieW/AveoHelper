@@ -49,9 +49,9 @@ fun HomeScreen(
             Text(navController.currentScreen.value)
             Button(
                 onClick = {
-                    navController.navigate(Screen.ProfileScreens.name)
+                    navController.navigate(Screen.AdminScreen.name)
                 }) {
-                Text("Navigate to Profile")
+                Text("Navigate to Admin")
             }
         }
     }

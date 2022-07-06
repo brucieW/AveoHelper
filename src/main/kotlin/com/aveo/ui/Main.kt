@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,9 +20,9 @@ import com.aveo.navcontroller.NavigationHost
 import com.aveo.navcontroller.composable
 import com.aveo.navcontroller.rememberNavController
 import com.aveo.ui.screens.HomeScreen
-import com.aveo.ui.screens.ProfileScreen
+import com.aveo.ui.screens.KitchenScreen
 import screens.SettingScreen
-import com.aveo.ui.screens.NotificationScreen
+import com.aveo.ui.screens.ResidentsScreen
 
 @Composable
 fun App() {
@@ -109,18 +106,18 @@ enum class Screen(
         label = "Home",
         icon = Icons.Filled.Home
     ),
-    NotificationsScreen(
+    ResidentsScreen(
         label = "Residents",
         icon = Icons.Filled.Face
     ),
-    SettingsScreen(
-        label = "Settings",
+    KitchenScreen(
+        label = "Kitchen",
+        icon = Icons.Filled.Favorite
+    ),
+    AdminScreen(
+        label = "Admin",
         icon = Icons.Filled.Settings
     ),
-    ProfileScreens(
-        label = "User Profile",
-        icon = Icons.Filled.AccountBox
-    )
 }
 
 
@@ -133,16 +130,16 @@ fun CustomNavigationHost(
             HomeScreen(navController)
         }
 
-        composable(Screen.NotificationsScreen.name) {
-            NotificationScreen(navController)
+        composable(Screen.ResidentsScreen.name) {
+            ResidentsScreen(navController)
         }
 
-        composable(Screen.SettingsScreen.name) {
+        composable(Screen.KitchenScreen.name) {
+            KitchenScreen(navController)
+        }
+
+        composable(Screen.AdminScreen.name) {
             SettingScreen(navController)
-        }
-
-        composable(Screen.ProfileScreens.name) {
-            ProfileScreen(navController)
         }
 
     }.build()
