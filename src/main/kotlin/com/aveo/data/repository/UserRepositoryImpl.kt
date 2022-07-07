@@ -1,5 +1,6 @@
-package com.aveo.data
+package com.aveo.data.repository
 
+import com.aveo.domain.repository.UserRepository
 import com.aveo.db.AveoDatabase
 import com.aveo.db.User
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -8,9 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class UserDataSourceImpl(
+class UserRepositoryImpl(
     db: AveoDatabase
-) : UserDataSource {
+) : UserRepository {
 
     private val queries = db.usersQueries
 

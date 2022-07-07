@@ -1,16 +1,17 @@
-package com.aveo.data
+package com.aveo.data.repository
 
 import com.aveo.db.AveoDatabase
 import com.aveo.db.Resident
+import com.aveo.domain.repository.ResidentRepository
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
-class ResidentDataSourceImpl(
+class ResidentRepositoryImpl(
     db: AveoDatabase
-) : ResidentDataSource {
+) : ResidentRepository {
 
     private val queries = db.residentsQueries
 

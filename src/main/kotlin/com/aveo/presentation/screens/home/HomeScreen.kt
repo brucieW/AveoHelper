@@ -1,25 +1,25 @@
-package com.aveo.ui.screens
+package com.aveo.presentation.screens.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.delay
 import com.aveo.navcontroller.NavController
-import com.aveo.ui.Screen
+import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: HomeViewModel
 ) {
+    val model = ViewModelProvider(this).get(HomeViewModel::class)
     var currentImage by remember { mutableStateOf(1) }
 
     LaunchedEffect(key1 = Unit) {
@@ -46,13 +46,6 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(navController.currentScreen.value)
-            Button(
-                onClick = {
-                    navController.navigate(Screen.AdminScreen.name)
-                }) {
-                Text("Navigate to Admin")
-            }
         }
     }
 }

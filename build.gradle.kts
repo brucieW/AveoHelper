@@ -20,15 +20,17 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
-val daggerVersion by extra("2.41")
+val daggerVersion by extra("2.42")
 
 dependencies {
     implementation(compose.desktop.currentOs)
 
     // Module dependencies
     implementation(project(":data"))
+    implementation("javax.inject:javax.inject:1")
 
     // Dagger : A fast dependency injector for Android and Java.
+    implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
     kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
 
@@ -60,6 +62,11 @@ dependencies {
 
     // JUnit : JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
     testImplementation(kotlin("test-junit5"))
+}
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.1.1")
+    }
 }
 
 tasks.withType<KotlinCompile> {

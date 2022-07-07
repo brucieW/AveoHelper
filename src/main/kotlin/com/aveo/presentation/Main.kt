@@ -1,4 +1,4 @@
-package com.aveo.ui
+package com.aveo.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,17 +15,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import com.aveo.di.AppComponent
 import com.aveo.navcontroller.NavController
 import com.aveo.navcontroller.NavigationHost
 import com.aveo.navcontroller.composable
 import com.aveo.navcontroller.rememberNavController
-import com.aveo.ui.screens.HomeScreen
-import com.aveo.ui.screens.KitchenScreen
-import screens.SettingScreen
+import com.aveo.presentation.common.Screen
+import com.aveo.presentation.screens.home.HomeScreen
+import com.aveo.presentation.screens.kitchen.KitchenScreen
 import com.aveo.ui.screens.ResidentsScreen
 
 @Composable
-fun App() {
+fun App(
+    appComponent: AppComponent
+) {
     val screens = Screen.values().toList()
     val navController by rememberNavController(Screen.HomeScreen.name)
     val currentScreen by remember {
@@ -95,31 +98,6 @@ fun main() = application {
     }
 }
 
-/**
- * Screens
- */
-enum class Screen(
-    val label: String,
-    val icon: ImageVector
-) {
-    HomeScreen(
-        label = "Home",
-        icon = Icons.Filled.Home
-    ),
-    ResidentsScreen(
-        label = "Residents",
-        icon = Icons.Filled.Face
-    ),
-    KitchenScreen(
-        label = "Kitchen",
-        icon = Icons.Filled.Favorite
-    ),
-    AdminScreen(
-        label = "Admin",
-        icon = Icons.Filled.Settings
-    ),
-}
-
 
 @Composable
 fun CustomNavigationHost(
@@ -127,6 +105,7 @@ fun CustomNavigationHost(
 ) {
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
+
             HomeScreen(navController)
         }
 
@@ -139,7 +118,7 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.AdminScreen.name) {
-            SettingScreen(navController)
+//            Screen.AdminScreen(navController)
         }
 
     }.build()

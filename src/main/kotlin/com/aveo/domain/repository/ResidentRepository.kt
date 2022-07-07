@@ -1,9 +1,9 @@
-package com.aveo.data
+package com.aveo.domain.repository
 
 import com.aveo.db.Resident
 import kotlinx.coroutines.flow.Flow
 
-interface ResidentDataSource {
+interface ResidentRepository {
 
     suspend fun getResidentById(id: Long) : Resident?
 

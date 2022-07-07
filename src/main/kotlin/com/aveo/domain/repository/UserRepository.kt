@@ -1,9 +1,9 @@
-package com.aveo.data
+package com.aveo.domain.repository
 
 import com.aveo.db.User
 import kotlinx.coroutines.flow.Flow
 
-interface UserDataSource {
+interface UserRepository {
 
     suspend fun getUserById(id: Long) : User?
 

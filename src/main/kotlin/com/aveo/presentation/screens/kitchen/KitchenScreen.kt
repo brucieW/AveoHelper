@@ -1,4 +1,4 @@
-package com.aveo.ui.screens
+package com.aveo.presentation.screens.kitchen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.aveo.navcontroller.NavController
-import com.aveo.ui.Screen
+import com.aveo.presentation.Screen
 
 @Composable
 fun KitchenScreen(
