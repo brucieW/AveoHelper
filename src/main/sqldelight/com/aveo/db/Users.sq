@@ -1,20 +1,21 @@
 CREATE TABLE user (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     userName TEXT NOT NULL,
     password TEXT NOT NULL
 );
 
-getUserById:
-SELECT * FROM user WHERE id = :id;
+INSERT INTO user (userName, password) VALUES ('admin', 'admin');
 
-getUserByName:
+getUser:
 SELECT * FROM user WHERE userName = :userName;
 
 getAllUsers:
 SELECT * FROM user ORDER BY userName;
 
+deleteUser:
+DELETE FROM user WHERE userName = :userName;
+
 insertUser:
 INSERT OR REPLACE INTO user (userName, password) VALUES (?, ?);
 
-deleteUserById:
-DELETE FROM user WHERE id = :id;
+
+

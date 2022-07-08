@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.aveo.navcontroller.NavController
-import com.aveo.presentation.Screen
+import com.aveo.presentation.common.Screen
 
 @Composable
 fun KitchenScreen(

@@ -3,32 +3,32 @@ package com.aveo.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.aveo.di.AppComponent
+import com.aveo.di.repositoriesModule
+import com.aveo.di.useCasesModule
+import com.aveo.di.viewModules
 import com.aveo.navcontroller.NavController
 import com.aveo.navcontroller.NavigationHost
 import com.aveo.navcontroller.composable
 import com.aveo.navcontroller.rememberNavController
 import com.aveo.presentation.common.Screen
 import com.aveo.presentation.screens.home.HomeScreen
+import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
 import com.aveo.ui.screens.ResidentsScreen
+import org.kodein.di.DI
+import org.kodein.di.*
 
 @Composable
-fun App(
-    appComponent: AppComponent
-) {
+fun App() {
     val screens = Screen.values().toList()
     val navController by rememberNavController(Screen.HomeScreen.name)
     val currentScreen by remember {
@@ -98,6 +98,11 @@ fun main() = application {
     }
 }
 
+val di = DI {
+    import(repositoriesModule)
+    import(viewModules)
+    import(useCasesModule)
+}
 
 @Composable
 fun CustomNavigationHost(
@@ -105,8 +110,8 @@ fun CustomNavigationHost(
 ) {
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
-
-            HomeScreen(navController)
+            val viewModel: HomeViewModel by di.instance()
+            HomeScreen(navController, viewModel)
         }
 
         composable(Screen.ResidentsScreen.name) {

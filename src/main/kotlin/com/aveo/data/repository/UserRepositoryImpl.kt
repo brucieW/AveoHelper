@@ -15,15 +15,9 @@ class UserRepositoryImpl(
 
     private val queries = db.usersQueries
 
-    override suspend fun getUserById(id: Long): User? {
+    override suspend fun getUser(userName: String): User? {
         return withContext(Dispatchers.IO) {
-            queries.getUserById(id).executeAsOneOrNull()
-        }
-    }
-
-    override suspend fun getUserByName(userName: String): User? {
-        return withContext(Dispatchers.IO) {
-            queries.getUserByName(userName).executeAsOneOrNull()
+            queries.getUser(userName).executeAsOneOrNull()
         }
     }
 
@@ -35,9 +29,9 @@ class UserRepositoryImpl(
         insertUser(userName, password)
     }
 
-    override suspend fun deleteUserById(id: Long) {
+    override suspend fun deleteUser(userName: String) {
         return withContext(Dispatchers.IO) {
-            queries.deleteUserById(id)
+            queries.deleteUser(userName)
         }
     }
 }

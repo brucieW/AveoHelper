@@ -20,19 +20,23 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
-val daggerVersion by extra("2.42")
+// val daggerVersion by extra("2.42")
+val sqlDelightVersion by extra("1.5.3")
 
 dependencies {
     implementation(compose.desktop.currentOs)
 
     // Module dependencies
-    implementation(project(":data"))
+//    implementation(project(":data"))
     implementation("javax.inject:javax.inject:1")
 
-    // Dagger : A fast dependency injector for Android and Java.
-    implementation("com.google.dagger:dagger:$daggerVersion")
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
+//    // Dagger : A fast dependency injector for Android and Java.
+//    implementation("com.google.dagger:dagger:$daggerVersion")
+//    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+//    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
+
+    // KODEIN
+    implementation("org.kodein.di:kodein-di:7.12.0")
 
     /**
      * Testing Dependencies
@@ -41,8 +45,8 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // DaggerMock
-    testImplementation("com.github.fabioCollini.daggermock:daggermock:0.8.5")
-    testImplementation("com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5")
+//    testImplementation("com.github.fabioCollini.daggermock:daggermock:0.8.5")
+//    testImplementation("com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5")
 
     // Mockito Core : Mockito mock objects library core API and implementation
     testImplementation("org.mockito:mockito-core:4.3.1")
@@ -51,8 +55,11 @@ dependencies {
     testImplementation("com.github.theapache64:expekt:1.0.0")
 
     // SQL DElight
-    implementation("com.squareup.sqldelight:runtime:1.5.3")
-    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:1.5.3")
+    implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:$sqlDelightVersion")
+    implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
+    implementation("mysql:mysql-connector-java:8.0.29")
+
 
     // JUnit
 
@@ -66,6 +73,7 @@ dependencies {
 buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.1.1")
+        classpath("com.squareup.sqldelight:gradle-plugin:1.5.3")
     }
 }
 
@@ -88,5 +96,6 @@ sqldelight {
     database("AveoDatabase") {
         packageName = "com.aveo.db"
         sourceFolders = listOf("sqldelight")
+        dialect = "sqlite:3.25"
     }
 }
