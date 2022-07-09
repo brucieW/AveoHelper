@@ -1,10 +1,7 @@
 package com.aveo.presentation.common
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -30,5 +27,9 @@ enum class Screen(
         label = "Admin",
         icon = Icons.Filled.Settings
     ),
+    AboutDialog(
+        label = "About",
+        icon = Icons.Filled.Info
+    )
 }
 

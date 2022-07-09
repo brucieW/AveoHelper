@@ -3,9 +3,7 @@ package com.aveo.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,13 +11,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.aveo.di.repositoriesModule
-import com.aveo.di.useCasesModule
 import com.aveo.di.viewModules
-import com.aveo.navcontroller.NavController
-import com.aveo.navcontroller.NavigationHost
-import com.aveo.navcontroller.composable
-import com.aveo.navcontroller.rememberNavController
+import com.aveo.navcontroller.*
 import com.aveo.presentation.common.Screen
+import com.aveo.presentation.dialogs.AboutDialog
 import com.aveo.presentation.screens.home.HomeScreen
 import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
@@ -34,6 +29,7 @@ fun App() {
     val currentScreen by remember {
         navController.currentScreen
     }
+    var showAbout by remember { mutableStateOf(false) }
 
     MaterialTheme {
         Surface(
@@ -63,10 +59,18 @@ fun App() {
                             },
                             alwaysShowLabel = false,
                             onClick = {
-                                navController.navigate(screen.name)
+                                if (screen.label == "About") {
+                                    showAbout = true
+                                } else {
+                                    navController.navigate(screen.name)
+                                }
                             }
                         )
                     }
+                }
+
+                if (showAbout) {
+                    AboutDialog(onClose = { showAbout = false })
                 }
 
                 Box(
@@ -101,7 +105,7 @@ fun main() = application {
 val di = DI {
     import(repositoriesModule)
     import(viewModules)
-    import(useCasesModule)
+//    import(useCasesModule)
 }
 
 @Composable
@@ -125,6 +129,10 @@ fun CustomNavigationHost(
         composable(Screen.AdminScreen.name) {
 //            Screen.AdminScreen(navController)
         }
+
+        composable(Screen.AboutDialog.name) {
+        }
+
 
     }.build()
 }

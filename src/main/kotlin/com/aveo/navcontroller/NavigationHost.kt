@@ -1,6 +1,7 @@
 package com.aveo.navcontroller
 
 import androidx.compose.runtime.Composable
+import com.aveo.presentation.dialogs.AboutDialog
 
 /**
  * NavigationHost class
@@ -37,5 +38,4 @@ fun NavigationHost.NavigationGraphBuilder.composable(
     if (navController.currentScreen.value == route) {
         content()
     }
-
 }

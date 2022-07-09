@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class UserRepositoryImpl(
-    db: AveoDatabase
+    private val db: AveoDatabase
 ) : UserRepository {
 
     private val queries = db.usersQueries
