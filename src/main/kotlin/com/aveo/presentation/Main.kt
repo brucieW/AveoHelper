@@ -115,7 +115,9 @@ fun CustomNavigationHost(
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
             val viewModel: HomeViewModel by di.instance()
+            val scope = rememberCoroutineScope()
             HomeScreen(navController, viewModel)
+            viewModel.init(scope)
         }
 
         composable(Screen.ResidentsScreen.name) {
