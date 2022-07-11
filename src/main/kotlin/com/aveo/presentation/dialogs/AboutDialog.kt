@@ -20,8 +20,7 @@ fun AboutDialog(
     AlertDialog(
         modifier = Modifier
             .size(280.dp, 260.dp)
-            .shadow(elevation = 20.dp)
-        ,
+            .shadow(elevation = 20.dp),
         onDismissRequest = {},
         buttons = {
             Button(
@@ -37,7 +36,8 @@ fun AboutDialog(
         },
         title = {
             Text(
-                "About Aveo Helper")
+                "About Aveo Helper"
+            )
         },
         text = {
             Column(

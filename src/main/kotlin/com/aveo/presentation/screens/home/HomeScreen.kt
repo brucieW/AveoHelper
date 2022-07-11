@@ -2,7 +2,6 @@ package com.aveo.presentation.screens.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -18,10 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
+import com.aveo.di.initTables
 import com.aveo.navcontroller.NavController
 import com.aveo.presentation.di
-import com.aveo.presentation.dialogs.ChangeAdminPasswordDialog
 import com.aveo.presentation.dialogs.ChangeAdminPasswordViewModel
 import kotlinx.coroutines.delay
 import org.kodein.di.instance
@@ -31,6 +29,7 @@ fun HomeScreen(
     navController: NavController,
     homeViewModel: HomeViewModel
 ) {
+    initTables()
     val homeState by homeViewModel.homeState
     var currentImage by remember { mutableStateOf(1) }
     val users = homeViewModel.users.collectAsState(initial = emptyList()).value

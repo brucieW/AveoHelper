@@ -97,7 +97,8 @@ fun main() = application {
         resizable = true,
         state = state,
         icon = painterResource("drawable/logo.png"),
-        onCloseRequest = ::exitApplication) {
+        onCloseRequest = ::exitApplication
+    ) {
         App()
     }
 }
@@ -105,7 +106,6 @@ fun main() = application {
 val di = DI {
     import(repositoriesModule)
     import(viewModules)
-//    import(useCasesModule)
 }
 
 @Composable

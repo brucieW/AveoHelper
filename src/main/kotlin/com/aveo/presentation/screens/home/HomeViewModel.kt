@@ -4,11 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import com.aveo.db.User
 import com.aveo.domain.repository.UserRepository
 import com.aveo.util.ViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class HomeViewModel(
     private val userRepository: UserRepository
@@ -19,20 +16,16 @@ class HomeViewModel(
 
     val users = userRepository.getAllUsers()
 
-    suspend fun getUser(userName: String) {
-        coroutineScope {
+    fun isDefaultAdminUser(): Boolean {
+        var user: User? = null
+
+        runBlocking {
             launch {
-                _homeState.value = homeState.value.copy(
-                    activeUser = userRepository.getUser(userName)
-                )
+                user = userRepository.getUser("admin")
             }
         }
-    }
 
-    fun isDefaultAdminUser() : Boolean {
-        val user = homeState.value.activeUser
-
-        return user != null && user.userName == "admin" && user.password == "admin"
+        return (user != null && user!!.userName == "admin" && user!!.password == "admin")
     }
 
     fun onEvent(event: HomeEvent) {
