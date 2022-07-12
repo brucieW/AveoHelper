@@ -11,31 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.aveo.di.initTables
-import com.aveo.domain.repository.UserRepository
 import com.aveo.navcontroller.NavController
-import com.aveo.presentation.di
-import com.aveo.presentation.dialogs.change_admin_password_dilog.ChangeAdminPasswordDialog
-import com.aveo.presentation.dialogs.change_admin_password_dilog.ChangeAdminPasswordViewModel
+import com.aveo.presentation.dialogs.login.LoginDialog
+import com.aveo.presentation.dialogs.login.LoginViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.kodein.di.instance
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    loginViewModel: LoginViewModel
 ) {
-    initTables()
-
-    val scope = rememberCoroutineScope()
     val homeState by homeViewModel.homeState
     var currentImage by remember { mutableStateOf(1) }
-    val users = homeViewModel.users.collectAsState(initial = emptyList()).value
 
     LaunchedEffect(key1 = Unit) {
         while (true) {
-            delay(10000)
+            delay(20000)
             currentImage = if (currentImage == 4) 1 else ++currentImage
         }
     }
@@ -60,16 +52,7 @@ fun HomeScreen(
             if (homeState.isLoggedIn) {
                 Text("Welcome ${homeState.activeUser?.userName}")
             } else {
-                if (homeViewModel.isDefaultAdminUser()) {
-                    val viewModel: ChangeAdminPasswordViewModel by di.instance()
-                    val userRepository: UserRepository by di.instance()
-                    viewModel.init(scope)
-                    scope.launch {
-                        val user = userRepository.getUser("admin")
-                        viewModel.password.value = user!!.password
-                    }
-
-                    ChangeAdminPasswordDialog(viewModel)
+                LoginDialog(homeViewModel, loginViewModel)
 //
 //                    Card(
 //                        elevation = 10.dp
@@ -112,7 +95,7 @@ fun HomeScreen(
 //                            )
 //                        }
 //                    }
-                }
+//                }
             }
         }
     }

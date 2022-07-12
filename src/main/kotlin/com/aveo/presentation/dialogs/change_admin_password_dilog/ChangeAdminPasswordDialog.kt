@@ -11,16 +11,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.screens.home.HomeEvent
+import com.aveo.presentation.screens.home.HomeViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChangeAdminPasswordDialog(
+    homeViewModel: HomeViewModel,
     viewModel: ChangeAdminPasswordViewModel
 ) {
     var password by viewModel.password
     var passwordVisible by viewModel.passwordVisible
+    var isValid by viewModel.isValid
+
     val icon = if (passwordVisible) painterResource("drawable/visible.png") else
-                                    painterResource("drawable/not_visible.png")
+        painterResource("drawable/not_visible.png")
 
     AlertDialog(
         modifier = Modifier.size(250.dp, 250.dp),
@@ -31,7 +36,10 @@ fun ChangeAdminPasswordDialog(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { }
+                    onClick = {
+                        homeViewModel.onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
+                    },
+                    enabled = isValid
                 ) {
                     Text("Change")
                 }
@@ -61,12 +69,12 @@ fun ChangeAdminPasswordDialog(
 
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { password = it },
+                    onValueChange = { viewModel.onEvent(ChangePasswordEvent.PasswordChanged(it)) },
                     placeholder = { Text(text = "Password") },
                     label = { Text(text = "Password") },
                     trailingIcon = {
                         IconButton(
-                            onClick = { passwordVisible = !passwordVisible }
+                            onClick = { viewModel.onEvent(ChangePasswordEvent.SetVisible) }
                         ) {
                             Icon(
                                 painter = icon,

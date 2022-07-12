@@ -15,6 +15,7 @@ import com.aveo.di.viewModules
 import com.aveo.navcontroller.*
 import com.aveo.presentation.common.Screen
 import com.aveo.presentation.dialogs.AboutDialog
+import com.aveo.presentation.dialogs.login.LoginViewModel
 import com.aveo.presentation.screens.home.HomeScreen
 import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
@@ -114,10 +115,9 @@ fun CustomNavigationHost(
 ) {
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
-            val viewModel: HomeViewModel by di.instance()
-            val scope = rememberCoroutineScope()
-            HomeScreen(navController, viewModel)
-            viewModel.init(scope)
+            val homeViewModel: HomeViewModel by di.instance()
+            val loginViewModel: LoginViewModel by di.instance()
+            HomeScreen(navController, homeViewModel, loginViewModel)
         }
 
         composable(Screen.ResidentsScreen.name) {

@@ -1,9 +1,12 @@
+import java.lang.Boolean;
+
 CREATE TABLE IF NOT EXISTS user (
     userName TEXT NOT NULL UNIQUE PRIMARY KEY,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    loggedIn INTEGER AS Boolean DEFAULT 0
 );
 
-INSERT INTO user (userName, password) VALUES ('admin', 'admin');
+INSERT INTO user (userName, password, loggedIn) VALUES ('admin', 'admin', 0);
 
 getUser:
 SELECT * FROM user WHERE userName = :userName;
@@ -15,7 +18,13 @@ deleteUser:
 DELETE FROM user WHERE userName = :userName;
 
 insertUser:
-INSERT OR REPLACE INTO user (userName, password) VALUES (?, ?);
+INSERT OR REPLACE INTO user (userName, password, loggedIn) VALUES (?, ?, ?);
+
+getLoggedInUser:
+SELECT * FROM user WHERE loggedIn = 1;
+
+setLoggedInUser:
+UPDATE user SET loggedIn = 1 WHERE userName = :userName;
 
 
 
