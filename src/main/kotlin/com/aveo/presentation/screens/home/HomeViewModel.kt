@@ -1,8 +1,10 @@
 package com.aveo.presentation.screens.home
 
 import androidx.compose.runtime.mutableStateOf
+import com.aveo.db.User
 import com.aveo.domain.repository.UserRepository
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
@@ -10,6 +12,18 @@ class HomeViewModel(
 ) {
     private val _homeState = mutableStateOf(HomeState())
     val homeState = _homeState
+
+    init {
+        CoroutineScope(Dispatchers.Main).launch {
+            setActiveUser(userRepository.getLoggedInUser())
+        }
+    }
+
+    private fun setActiveUser(user: User?) {
+        _homeState.value = homeState.value.copy(
+            activeUser = user
+        )
+    }
 
     fun onEvent(event: HomeEvent) {
         when (event) {
@@ -26,9 +40,27 @@ class HomeViewModel(
             }
 
             is HomeEvent.SaveAdminPassword -> {
-                GlobalScope.launch {
+                CoroutineScope(Dispatchers.Main).launch {
                     userRepository.insertUser("admin", event.password)
                     onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
+                }
+            }
+
+            is HomeEvent.LogOut -> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val user = userRepository.getLoggedInUser()
+
+                    if (user != null && user.loggedIn == true) {
+                        userRepository.deleteLoggedInUser(user.userName)
+                        setActiveUser(null)
+                    }
+                }
+            }
+
+            is HomeEvent.LoginUser -> {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val user = userRepository.getLoggedInUser()
+                    setActiveUser(user)
                 }
             }
         }

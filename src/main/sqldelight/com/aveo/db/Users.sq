@@ -26,5 +26,8 @@ SELECT * FROM user WHERE loggedIn = 1;
 setLoggedInUser:
 UPDATE user SET loggedIn = 1 WHERE userName = :userName;
 
+deleteLoggedInUser:
+UPDATE user SET loggedIn = 0 WHERE userName = :userName;
+
 
 

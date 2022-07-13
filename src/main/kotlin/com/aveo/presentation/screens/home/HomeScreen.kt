@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,53 +50,14 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (homeState.isLoggedIn) {
-                Text("Welcome ${homeState.activeUser?.userName}")
+            if (homeState.activeUser != null) {
+                Button(
+                    onClick = { homeViewModel.onEvent(HomeEvent.LogOut)}
+                ) {
+                    Text("Log Out")
+                }
             } else {
                 LoginDialog(homeViewModel, loginViewModel)
-//
-//                    Card(
-//                        elevation = 10.dp
-//                    ) {
-//                        if (users.isEmpty()) {
-//                            Text(
-//                                text = "Please Log In",
-//                                modifier = Modifier
-//                                    .fillMaxWidth(),
-//                                textAlign = TextAlign.Center,
-//                                style = TextStyle(
-//                                    color = Color(255, 255, 255),
-//                                    fontWeight = FontWeight.Bold,
-//                                    fontSize = 30.sp
-//                                )
-//
-//                            )
-//                        } else if (homeState.activeUser != null) {
-//                            Text(
-//                                text = "Logged in as ${homeState.activeUser}",
-//                                modifier = Modifier
-//                                    .fillMaxWidth(),
-//                                textAlign = TextAlign.Center,
-//                                style = TextStyle(
-//                                    color = Color(255, 255, 255),
-//                                    fontWeight = FontWeight.Bold,
-//                                    fontSize = 30.sp
-//                                )
-//                            )
-//
-//                            Text(
-//                                text = "Users = $users",
-//                                Modifier.fillMaxWidth(),
-//                                textAlign = TextAlign.Center,
-//                                style = TextStyle(
-//                                    color = Color(255, 255, 255),
-//                                    fontWeight = FontWeight.Bold,
-//                                    fontSize = 30.sp
-//                                )
-//                            )
-//                        }
-//                    }
-//                }
             }
         }
     }

@@ -1,18 +1,24 @@
 package com.aveo.presentation.dialogs.login
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.screens.home.HomeEvent
 import com.aveo.presentation.screens.home.HomeViewModel
 
 @Composable
@@ -23,20 +29,28 @@ fun LoginDialog(
     val state by loginViewModel.state
 
     loginViewModel.init()
-    NormalLogin(state.showNormalLogin && !state.loginShutdown, loginViewModel)
+
+    NormalLogin(
+        show = state.showNormalLogin && !state.loginShutdown,
+        homeViewModel,
+        loginViewModel)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NormalLogin(
     show: Boolean,
+    homeViewModel: HomeViewModel,
     viewModel: LoginViewModel
 ) {
     if (show) {
         val state by viewModel.state
+        val focusRequester = remember { FocusRequester() }
 
         AlertDialog(
-            modifier = Modifier.size(250.dp, 270.dp),
+            modifier = Modifier
+                .size(250.dp, 270.dp)
+                .border(width = 4.dp, color = Color.Gray),
             onDismissRequest = {},
             buttons = {
                 Row(
@@ -48,18 +62,12 @@ fun NormalLogin(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.onEvent(LoginEvent.SavePassword(state.userName, state.password))
+                            viewModel.onEvent(LoginEvent.LoginUser(state.userName, state.password))
+                            homeViewModel.onEvent(HomeEvent.LoginUser(state.userName))
                         },
                         enabled = state.isValid
                     ) {
                         Text("Login")
-                    }
-
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Button(
-                        onClick = { viewModel.onEvent(LoginEvent.ShowLoginDialog(false)) }
-                    ) {
-                        Text("Cancel")
                     }
                 }
             },
@@ -73,10 +81,15 @@ fun NormalLogin(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     NormalField(
+                        modifier = Modifier.focusRequester(focusRequester),
                         state.userName,
                         "User Name",
                         onChange = { viewModel.onEvent(LoginEvent.ChangeUserName(it)) }
                     )
+
+                    LaunchedEffect(Unit) {
+                        focusRequester.requestFocus()
+                    }
 
                     PasswordField(
                         state.password,
@@ -99,11 +112,13 @@ fun NormalLogin(
 
 @Composable
 fun NormalField(
+    modifier:Modifier = Modifier,
     value: String,
     placeHolder: String,
     onChange: (String) -> Unit
 ) {
     OutlinedTextField(
+        modifier = modifier,
         value = value,
         onValueChange = { onChange(it) },
         placeholder = { Text(text = placeHolder) },

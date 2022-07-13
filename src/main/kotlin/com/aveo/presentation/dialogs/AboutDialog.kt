@@ -5,10 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.aveo.presentation.theme.Blue50
 import com.aveo.presentation.theme.Shapes
 import com.aveo.presentation.theme.smallerText
 
@@ -18,9 +16,7 @@ fun AboutDialog(
     onClose: () -> Unit
 ) {
     AlertDialog(
-        modifier = Modifier
-            .size(280.dp, 260.dp)
-            .shadow(elevation = 20.dp),
+        modifier = Modifier.size(280.dp, 260.dp),
         onDismissRequest = {},
         buttons = {
             Button(
@@ -58,7 +54,6 @@ fun AboutDialog(
                 )
             }
         },
-        shape = Shapes.large,
-        backgroundColor = Blue50
+        shape = Shapes.large
     )
 }

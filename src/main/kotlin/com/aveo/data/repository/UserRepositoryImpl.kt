@@ -18,7 +18,7 @@ class UserRepositoryImpl(
     private val queries = db.usersQueries
 
     init {
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.Main).launch {
             dbDriver?.execute(
                 null, "CREATE TABLE IF NOT EXISTS user (\n" +
                         "    userName TEXT NOT NULL UNIQUE PRIMARY KEY,\n" +
@@ -54,7 +54,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun getUser(userName: String): User? {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Main) {
             queries.getUser(userName).executeAsOneOrNull()
         }
     }
@@ -68,20 +68,26 @@ class UserRepositoryImpl(
     }
 
     override suspend fun deleteUser(userName: String) {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Main) {
             queries.deleteUser(userName)
         }
     }
 
     override suspend fun getLoggedInUser() : User? {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Main) {
             queries.getLoggedInUser().executeAsOneOrNull()
         }
     }
 
     override suspend fun setLoggedInUser(userName: String) {
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Main) {
             queries.setLoggedInUser(userName)
+        }
+    }
+
+    override suspend fun deleteLoggedInUser(userName: String) {
+        return withContext(Dispatchers.Main) {
+            queries.deleteLoggedInUser(userName)
         }
     }
 }

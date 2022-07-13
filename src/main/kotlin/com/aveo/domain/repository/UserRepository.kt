@@ -19,4 +19,6 @@ interface UserRepository {
     suspend fun getLoggedInUser() : User?
 
     suspend fun setLoggedInUser(userName: String)
+
+    suspend fun deleteLoggedInUser(userName: String)
 }

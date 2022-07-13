@@ -2,7 +2,8 @@ package com.aveo.presentation.dialogs.login
 
 import androidx.compose.runtime.mutableStateOf
 import com.aveo.domain.repository.UserRepository
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -14,7 +15,7 @@ class LoginViewModel(
     private val repository = userRepository
 
     fun init() {
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.Main).launch {
             val user = repository.getLoggedInUser()
 
             if (user == null) {
@@ -61,14 +62,16 @@ class LoginViewModel(
                 )
             }
 
-            is LoginEvent.SavePassword -> {
-                GlobalScope.launch {
+            is LoginEvent.LoginUser -> {
+                CoroutineScope(Dispatchers.Main).launch {
                     val user = repository.getUser(event.userName)
 
                     if (user != null && user.userName == state.value.userName &&
                                                 user.password == state.value.password) {
                         repository.setLoggedInUser(user.userName)
                         _state.value = state.value.copy(
+                            userName = "",
+                            password = "",
                             showNormalLogin = false
                         )
                     } else {
