@@ -13,15 +13,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.aveo.navcontroller.NavController
+import com.aveo.presentation.dialogs.change_admin_password_dialog.ChangeAdminPasswordDialog
 import com.aveo.presentation.dialogs.login.LoginDialog
-import com.aveo.presentation.dialogs.login.LoginViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel,
-    loginViewModel: LoginViewModel
+    homeViewModel: HomeViewModel
 ) {
     val homeState by homeViewModel.homeState
     var currentImage by remember { mutableStateOf(1) }
@@ -51,13 +50,27 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (homeState.activeUser != null) {
+                if (homeState.activeUser!!.userName == "admin") {
+                    Button(
+                        onClick = { homeViewModel.onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true)) }
+                    ) {
+                        Text( "Manage Users")
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
                 Button(
                     onClick = { homeViewModel.onEvent(HomeEvent.LogOut)}
                 ) {
                     Text("Log Out")
                 }
+
+                if (homeState.showChangeAdminPasswordDialog) {
+                    ChangeAdminPasswordDialog(homeViewModel)
+                }
             } else {
-                LoginDialog(homeViewModel, loginViewModel)
+                LoginDialog(homeViewModel)
             }
         }
     }

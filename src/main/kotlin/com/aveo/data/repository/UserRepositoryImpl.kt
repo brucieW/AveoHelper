@@ -45,7 +45,7 @@ class UserRepositoryImpl(
             if (user == null) {
                 dbDriver?.execute(
                     null,
-                    "INSERT INTO user (userName, password) VALUES ('admin', 'admin')",
+                    "INSERT INTO user (userName, password, loggedIn) VALUES ('admin', 'admin', 1)",
                     0,
                     null
                 )
@@ -63,8 +63,8 @@ class UserRepositoryImpl(
         return queries.getAllUsers().asFlow().mapToList()
     }
 
-    override suspend fun insertUser(userName: String, password: String) {
-        insertUser(userName, password)
+    override suspend fun insertUser(userName: String, password: String, loggedIn: Long) {
+        insertUser(userName, password, loggedIn)
     }
 
     override suspend fun deleteUser(userName: String) {

@@ -15,9 +15,9 @@ class ResidentRepositoryImpl(
 
     private val queries = db.residentsQueries
 
-    override suspend fun getResidentById(id: Long): Resident? {
+    override suspend fun getResidentByUnitNumber(unitNumber: Long): Resident? {
         return withContext(Dispatchers.Main) {
-            queries.getResidentById(id).executeAsOneOrNull()
+            queries.getResidentByUnitNumber(unitNumber).executeAsOneOrNull()
         }
     }
 
@@ -31,27 +31,23 @@ class ResidentRepositoryImpl(
         }
     }
 
-    override suspend fun getResidentByUnitNumber(unitNumber: Long): Resident? {
-        return withContext(Dispatchers.Main) {
-            queries.getResidentByUnitNumber(unitNumber).executeAsOneOrNull()
-        }
-    }
-
     override suspend fun insertResident(
         unitNumber: Long,
-        firstName: String,
+        firstName1: String,
+        firstName2: String,
         lastName: String,
         phoneNumber: String,
-        mobileNumber: String
+        mobileNumber: String,
+        mobileNumberId: Long
     ) {
         return withContext(Dispatchers.Main) {
-            queries.insertResident(null, unitNumber, firstName, lastName, phoneNumber, mobileNumber)
+            queries.insertResident( unitNumber, firstName1, firstName2, lastName, phoneNumber, mobileNumber, mobileNumberId)
         }
     }
 
-    override suspend fun deleteResidentById(id: Long) {
+    override suspend fun deleteResidentByUnitNumber(id: Long) {
         return withContext(Dispatchers.Main) {
-            queries.deleteResidentById(id)
+            queries.deleteResidentByUnitNumber(id)
         }
     }
 }

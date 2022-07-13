@@ -12,6 +12,7 @@ interface UserRepository {
     suspend fun insertUser(
         userName: String,
         password: String,
+        loggedIn: Long
     )
 
     suspend fun deleteUser(userName: String)

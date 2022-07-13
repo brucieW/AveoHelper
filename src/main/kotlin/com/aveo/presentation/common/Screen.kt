@@ -23,10 +23,6 @@ enum class Screen(
         label = "Kitchen",
         icon = Icons.Filled.Favorite
     ),
-    AdminScreen(
-        label = "Admin",
-        icon = Icons.Filled.Settings
-    ),
     AboutDialog(
         label = "About",
         icon = Icons.Filled.Info

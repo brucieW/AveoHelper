@@ -5,21 +5,21 @@ import kotlinx.coroutines.flow.Flow
 
 interface ResidentRepository {
 
-    suspend fun getResidentById(id: Long) : Resident?
+    suspend fun getResidentByUnitNumber(unitNumber: Long) : Resident?
 
     fun getAllResidents() : Flow<List<Resident>>
 
     suspend fun getResidentByName(lastName: String) : Resident?
 
-    suspend fun getResidentByUnitNumber(unitNumber: Long) : Resident?
-
     suspend fun insertResident(
         unitNumber: Long,
-        firstName: String,
+        firstName1: String,
+        firstName2: String,
         lastName: String,
         phoneNumber: String,
-        mobileNumber: String
+        mobileNumber: String,
+        mobileNumberId: Long
     )
 
-    suspend fun deleteResidentById(id: Long)
+    suspend fun deleteResidentByUnitNumber(id: Long)
 }

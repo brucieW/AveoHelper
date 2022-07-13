@@ -15,11 +15,10 @@ import com.aveo.di.viewModules
 import com.aveo.navcontroller.*
 import com.aveo.presentation.common.Screen
 import com.aveo.presentation.dialogs.AboutDialog
-import com.aveo.presentation.dialogs.login.LoginViewModel
 import com.aveo.presentation.screens.home.HomeScreen
 import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
-import com.aveo.ui.screens.ResidentsScreen
+import com.aveo.presentation.screens.residents.ResidentsScreen
 import org.kodein.di.DI
 import org.kodein.di.*
 
@@ -27,9 +26,7 @@ import org.kodein.di.*
 fun App() {
     val screens = Screen.values().toList()
     val navController by rememberNavController(Screen.HomeScreen.name)
-    val currentScreen by remember {
-        navController.currentScreen
-    }
+    val currentScreen by remember { navController.currentScreen }
     var showAbout by remember { mutableStateOf(false) }
 
     MaterialTheme {
@@ -116,8 +113,7 @@ fun CustomNavigationHost(
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
             val homeViewModel: HomeViewModel by di.instance()
-            val loginViewModel: LoginViewModel by di.instance()
-            HomeScreen(navController, homeViewModel, loginViewModel)
+            HomeScreen(navController, homeViewModel)
         }
 
         composable(Screen.ResidentsScreen.name) {
@@ -126,10 +122,6 @@ fun CustomNavigationHost(
 
         composable(Screen.KitchenScreen.name) {
             KitchenScreen(navController)
-        }
-
-        composable(Screen.AdminScreen.name) {
-//            Screen.AdminScreen(navController)
         }
 
         composable(Screen.AboutDialog.name) {
