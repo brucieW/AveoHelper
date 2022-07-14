@@ -34,6 +34,8 @@ fun NormalField(
 fun PasswordField(
     modifier: Modifier = Modifier,
     value: String,
+    placeHolder: String = "Password",
+    addVisibleIcon: Boolean = true,
     onChange: (String) -> Unit,
     onSetVisible: () -> Unit,
     passwordVisible: Boolean
@@ -45,16 +47,18 @@ fun PasswordField(
         modifier = modifier,
         value = value,
         onValueChange = { onChange(it) },
-        placeholder = { Text(text = "Password") },
-        label = { Text(text = "Password") },
+        placeholder = { Text(text = placeHolder) },
+        label = { Text(text = placeHolder) },
         trailingIcon = {
-            IconButton(
-                onClick = { onSetVisible() }
-            ) {
-                Icon(
-                    painter = icon,
-                    contentDescription = "Visibility Icon"
-                )
+            if (addVisibleIcon) {
+                IconButton(
+                    onClick = { onSetVisible() }
+                ) {
+                    Icon(
+                        painter = icon,
+                        contentDescription = "Visibility Icon"
+                    )
+                }
             }
         },
         singleLine = true,

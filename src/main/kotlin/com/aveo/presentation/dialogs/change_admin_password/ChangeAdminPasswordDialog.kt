@@ -1,4 +1,4 @@
-package com.aveo.presentation.dialogs.change_admin_password_dialog
+package com.aveo.presentation.dialogs.change_admin_password
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -43,7 +43,7 @@ fun ChangeAdminPasswordDialog(
             ) {
                 Button(
                     onClick = {
-                        viewModel.onEvent(ChangePasswordEvent.LoginUser(userName))
+                        viewModel.onEvent(ChangeAdminPasswordEvent.LoginUser(userName))
                         homeViewModel.onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
                     },
                     enabled = isValid
@@ -63,8 +63,8 @@ fun ChangeAdminPasswordDialog(
                 PasswordField(
                     modifier = Modifier.focusRequester(focusRequester),
                     password,
-                    onChange = { viewModel.onEvent(ChangePasswordEvent.PasswordChanged(it)) },
-                    onSetVisible = { viewModel.onEvent(ChangePasswordEvent.SetVisible) },
+                    onChange = { viewModel.onEvent(ChangeAdminPasswordEvent.PasswordChanged(it)) },
+                    onSetVisible = { viewModel.onEvent(ChangeAdminPasswordEvent.SetVisible) },
                     passwordVisible = passwordVisible
                 )
 

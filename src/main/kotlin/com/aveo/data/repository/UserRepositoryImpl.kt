@@ -63,8 +63,8 @@ class UserRepositoryImpl(
         return queries.getAllUsers().asFlow().mapToList()
     }
 
-    override suspend fun insertUser(userName: String, password: String, loggedIn: Long) {
-        insertUser(userName, password, loggedIn)
+    override suspend fun insertUser(userName: String, password: String, loggedIn: Boolean) {
+        queries.insertUser(userName, password, loggedIn)
     }
 
     override suspend fun deleteUser(userName: String) {

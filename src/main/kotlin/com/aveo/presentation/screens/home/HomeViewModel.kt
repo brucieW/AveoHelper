@@ -19,10 +19,22 @@ class HomeViewModel(
         }
     }
 
-    private fun setActiveUser(user: User?) {
+    fun setActiveUser(user: User?) {
         _homeState.value = homeState.value.copy(
             activeUser = user
         )
+    }
+
+    fun getActiveUser() : User? {
+        return homeState.value.activeUser
+    }
+
+    fun getActiveUserName() : String {
+        return homeState.value.activeUser!!.userName
+    }
+
+    fun getActivePassword() : String {
+        return homeState.value.activeUser!!.password
     }
 
     fun onEvent(event: HomeEvent) {
@@ -35,15 +47,27 @@ class HomeViewModel(
 
             is HomeEvent.ChangeAdminPassword -> {
                 _homeState.value = homeState.value.copy(
-                    adminPassord = event.password
+                    adminPassword = event.password
                 )
             }
 
             is HomeEvent.SaveAdminPassword -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    userRepository.insertUser("admin", event.password, 1)
+                    userRepository.insertUser("admin", event.password, true)
                     onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
                 }
+            }
+
+            is HomeEvent.ShowChangePasswordDialog -> {
+                if (event.show == false) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        setActiveUser(userRepository.getLoggedInUser())
+                    }
+                }
+
+                _homeState.value = homeState.value.copy(
+                    showChangePasswordDialog = event.show
+                )
             }
 
             is HomeEvent.LogOut -> {

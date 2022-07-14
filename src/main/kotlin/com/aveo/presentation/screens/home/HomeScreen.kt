@@ -13,7 +13,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.aveo.navcontroller.NavController
-import com.aveo.presentation.dialogs.change_admin_password_dialog.ChangeAdminPasswordDialog
+import com.aveo.presentation.dialogs.change_admin_password.ChangeAdminPasswordDialog
+import com.aveo.presentation.dialogs.change_password.ChangePasswordDialog
 import com.aveo.presentation.dialogs.login.LoginDialog
 import kotlinx.coroutines.delay
 
@@ -61,9 +62,21 @@ fun HomeScreen(
                 }
 
                 Button(
+                    onClick = { homeViewModel.onEvent(HomeEvent.ShowChangePasswordDialog(true)) }
+                ) {
+                    Text( "Change Password")
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
                     onClick = { homeViewModel.onEvent(HomeEvent.LogOut)}
                 ) {
                     Text("Log Out")
+                }
+
+                if (homeState.showChangePasswordDialog) {
+                   ChangePasswordDialog(homeViewModel)
                 }
 
                 if (homeState.showChangeAdminPasswordDialog) {

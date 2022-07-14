@@ -1,4 +1,4 @@
-package com.aveo.presentation.dialogs.change_admin_password_dialog
+package com.aveo.presentation.dialogs.change_admin_password
 
 import androidx.compose.runtime.*
 import com.aveo.domain.repository.UserRepository
@@ -17,23 +17,23 @@ class ChangeAdminPasswordViewModel(
     var isValid = mutableStateOf(false)
 
     fun onEvent(
-        event: ChangePasswordEvent
+        event: ChangeAdminPasswordEvent
     ) {
         when (event) {
-            is ChangePasswordEvent.PasswordChanged -> {
+            is ChangeAdminPasswordEvent.PasswordChanged -> {
                 password.value = event.password
                 isValid.value = !(password.value.isEmpty() || password.value == "admin")
 
                 error.value = if (password.value == "admin") "Password must be different" else ""
             }
 
-            is ChangePasswordEvent.SetVisible -> {
+            is ChangeAdminPasswordEvent.SetVisible -> {
                 passwordVisible.value = !passwordVisible.value
             }
 
-            is ChangePasswordEvent.LoginUser -> {
+            is ChangeAdminPasswordEvent.LoginUser -> {
                 CoroutineScope(Dispatchers.Main).launch {
-                    repository.insertUser(event.userName, password.value, 1)
+                    repository.insertUser(event.userName, password.value, true)
                 }
             }
         }
