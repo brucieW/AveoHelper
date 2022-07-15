@@ -12,6 +12,7 @@ class ManageUsersViewModel(
 ) {
     var selectedUser = mutableStateOf<User?>(null)
     var newUserName = mutableStateOf("")
+    var newUserEnabled = mutableStateOf(false)
 
     var showAddUserEdit = mutableStateOf(false)
 
@@ -23,10 +24,16 @@ class ManageUsersViewModel(
 
     fun showAddUserEdit(show: Boolean) {
         showAddUserEdit.value = show
+        newUserName.value = ""
+        newUserEnabled.value = false
     }
 
     fun onNewUserNameChange(name: String) {
         newUserName.value = name
+    }
+
+    fun setNewUserEnabled(enabled: Boolean) {
+        newUserEnabled.value = enabled
     }
 
     fun addNewUser(userName: String) {

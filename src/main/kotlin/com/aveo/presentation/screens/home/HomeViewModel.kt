@@ -90,6 +90,8 @@ class HomeViewModel(
 
                     if (user!!.userName == "admin" && user.password == "admin") {
                         onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true))
+                    } else if (user.password == "password") {
+                        onEvent(HomeEvent.ShowChangePasswordDialog(true))
                     }
                 }
             }

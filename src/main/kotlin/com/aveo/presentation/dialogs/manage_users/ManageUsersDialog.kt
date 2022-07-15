@@ -6,15 +6,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.aveo.presentation.di
 import com.aveo.presentation.screens.home.HomeEvent
 import com.aveo.presentation.screens.home.HomeViewModel
@@ -31,8 +33,11 @@ fun ManageUsersDialog(
     val selectedUser by viewModel.selectedUser
     val showAddUserEdit by viewModel.showAddUserEdit
     val newUserName by viewModel.newUserName
+    val newUserEnabled by viewModel.newUserEnabled
 
     val users = viewModel.users.collectAsState(initial = emptyList()).value
+
+    val focusRequester = remember { FocusRequester() }
 
     AlertDialog(
         modifier = Modifier
@@ -47,31 +52,53 @@ fun ManageUsersDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    onClick = { viewModel.showAddUserEdit(true) },
+                    onClick = { viewModel.showAddUserEdit(true) }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.AddCircle,
                         contentDescription = "Add New User",
-                        tint = Blue700
+                        tint = Blue700,
                     )
                 }
 
                 if (showAddUserEdit) {
-                    TextField(
-                        value = newUserName,
-                        onValueChange = { viewModel.onNewUserNameChange(it) },
-                        label = { Text("User Name", fontSize = 10.sp) },
-                        modifier = Modifier.fillMaxWidth(.58f),
-                        textStyle = normalText
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(.52f)
+                            .border(1.dp, Color.Black)
+                            .padding(5.dp)
+                    ) {
+                        BasicTextField(
+                            value = newUserName,
+                            onValueChange = {
+                                viewModel.onNewUserNameChange(it)
+                                viewModel.setNewUserEnabled(newUserName.isNotEmpty() && users.none { user ->
+                                    user.userName.equals(
+                                        newUserName
+                                    )
+                                })
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester),
+                            textStyle = normalText
+                        )
+                    }
+
+                    LaunchedEffect(Unit) {
+                        focusRequester.requestFocus()
+                    }
 
                     IconButton(
-                        onClick = { viewModel.addNewUser(newUserName) },
+                        onClick = {
+                            viewModel.addNewUser(newUserName)
+                        },
+                        enabled = newUserEnabled
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowForward,
                             contentDescription = "Save New User",
-                            tint = Blue700
+                            tint = if (newUserEnabled) Blue700 else Color.Gray
                         )
                     }
 
@@ -80,7 +107,7 @@ fun ManageUsersDialog(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Close,
-                            contentDescription = "Save New User",
+                            contentDescription = "Cancel Save New User",
                             tint = Blue700
                         )
                     }
@@ -115,16 +142,17 @@ fun ManageUsersDialog(
             }
         },
         text = {
-            Column(
+            Box(
                 modifier = Modifier
+                    .size(width = 200.dp, height = 120.dp)
                     .border(1.dp, Color.Black)
                     .background(Color.LightGray)
             ) {
                 LazyColumn(
-                    modifier = Modifier.size(width = 200.dp, height = 110.dp)
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     items(
-                        users.filter { user -> user.userName != "admin"}
+                        users.filter { user -> user.userName != "admin" }
                     ) { user ->
                         Row(
                             modifier = Modifier
@@ -178,4 +206,3 @@ fun ManageUsersDialog(
         }
     )
 }
-

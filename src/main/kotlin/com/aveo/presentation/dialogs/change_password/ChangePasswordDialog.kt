@@ -66,27 +66,35 @@ fun ChangePasswordDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PasswordField(
-                    modifier = Modifier.focusRequester(focusRequester),
-                    state.currentPassword,
-                    placeHolder = "Current Password",
-                    addVisibleIcon = false,
-                    onChange = { viewModel.onEvent(ChangePasswordEvent.CurrentPasswordChanged(it)) },
-                    onSetVisible = { viewModel.onEvent(ChangePasswordEvent.SetCurrentPasswordVisible) },
-                    passwordVisible = state.currentPasswordVisible
-                )
+                val initialPassword = homeViewModel.homeState.value.activeUser!!.password == "password"
+                var focusRequesterModifier = Modifier.focusRequester(focusRequester)
 
-                LaunchedEffect(Unit) {
-                    focusRequester.requestFocus()
+                if (!initialPassword) {
+                    PasswordField(
+                        modifier = focusRequesterModifier,
+                        state.currentPassword,
+                        placeHolder = "Current Password",
+                        addVisibleIcon = false,
+                        onChange = { viewModel.onEvent(ChangePasswordEvent.CurrentPasswordChanged(it)) },
+                        onSetVisible = { viewModel.onEvent(ChangePasswordEvent.SetCurrentPasswordVisible) },
+                        passwordVisible = state.currentPasswordVisible
+                    )
+
+                    focusRequesterModifier = Modifier
                 }
 
                 PasswordField(
+                    modifier = focusRequesterModifier,
                     value = state.newPassword,
                     placeHolder = "New Password",
                     onChange = { viewModel.onEvent(ChangePasswordEvent.NewPasswordChanged(it)) },
                     onSetVisible = { viewModel.onEvent(ChangePasswordEvent.SetNewPasswordVisible) },
                     passwordVisible = state.newPasswordVisible
                 )
+
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
+                }
 
                 if (state.error.isNotBlank()) {
                     Text(

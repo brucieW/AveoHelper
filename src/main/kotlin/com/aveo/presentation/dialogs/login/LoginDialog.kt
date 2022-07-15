@@ -86,9 +86,9 @@ fun NormalLogin(
                         onChange = { viewModel.onEvent(LoginEvent.ChangeUserName(it)) }
                     )
 
-                    LaunchedEffect(Unit) {
-                        focusRequester.requestFocus()
-                    }
+                        LaunchedEffect(Unit) {
+                            focusRequester.requestFocus()
+                        }
 
                     PasswordField(
                         value = state.password,

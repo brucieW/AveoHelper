@@ -4,7 +4,6 @@ import com.aveo.db.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-
     suspend fun getUser(userName: String) : User?
 
     fun getAllUsers() : Flow<List<User>>
