@@ -8,13 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.aveo.di.repositoriesModule
 import com.aveo.di.viewModules
 import com.aveo.navcontroller.*
 import com.aveo.presentation.common.Screen
-import com.aveo.presentation.dialogs.AboutDialog
+import com.aveo.presentation.common.AboutDialog
 import com.aveo.presentation.screens.home.HomeScreen
 import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
@@ -83,11 +82,7 @@ fun App() {
 
 fun main() = application {
     val state = rememberWindowState(
-        placement = WindowPlacement.Floating,
-        position = WindowPosition(Alignment.Center),
-        isMinimized = false,
-        width = 800.dp,
-        height = 600.dp
+        position = WindowPosition(Alignment.Center)
     )
 
     Window(

@@ -7,7 +7,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
-import com.aveo.presentation.theme.Blue800
 
 val navigationTitle = TextStyle(
     fontFamily = FontFamily.Default,
@@ -50,9 +49,9 @@ val textInputStyle = TextStyle(
 
 val normalText = TextStyle(
     fontFamily = FontFamily.Default,
-    fontSize = 18.sp,
-    fontWeight = FontWeight.SemiBold,
-    color = Blue800
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Normal,
+    color = Color.Black
 )
 
 val errorText = TextStyle(
@@ -64,8 +63,7 @@ val errorText = TextStyle(
 
 val smallerText = TextStyle(
     fontFamily = FontFamily.Default,
-    fontSize = 12.sp,
-    fontWeight = FontWeight.ExtraLight,
+    fontSize = 10.sp,
     color = Color.Black
 )
 

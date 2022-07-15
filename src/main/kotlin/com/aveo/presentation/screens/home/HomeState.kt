@@ -7,7 +7,7 @@ data class HomeState(
     var activeUser: User? = null,
     var showChangeAdminPasswordDialog: Boolean = false,
     var showChangePasswordDialog: Boolean = false,
-    var showMangePasswordsDialog: Boolean = false,
+    var showManageUsersDialog: Boolean = false,
     var adminPassword: String = "",
     var isDefaultAdminUser: Boolean = false
 )

@@ -16,6 +16,7 @@ import com.aveo.navcontroller.NavController
 import com.aveo.presentation.dialogs.change_admin_password.ChangeAdminPasswordDialog
 import com.aveo.presentation.dialogs.change_password.ChangePasswordDialog
 import com.aveo.presentation.dialogs.login.LoginDialog
+import com.aveo.presentation.dialogs.manage_users.ManageUsersDialog
 import kotlinx.coroutines.delay
 
 @Composable
@@ -53,7 +54,7 @@ fun HomeScreen(
             if (homeState.activeUser != null) {
                 if (homeState.activeUser!!.userName == "admin") {
                     Button(
-                        onClick = { homeViewModel.onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true)) }
+                        onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(true)) }
                     ) {
                         Text( "Manage Users")
                     }
@@ -81,6 +82,10 @@ fun HomeScreen(
 
                 if (homeState.showChangeAdminPasswordDialog) {
                     ChangeAdminPasswordDialog(homeViewModel)
+                }
+
+                if (homeState.showManageUsersDialog) {
+                    ManageUsersDialog(homeViewModel)
                 }
             } else {
                 LoginDialog(homeViewModel)

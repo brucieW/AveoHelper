@@ -29,10 +29,6 @@ class HomeViewModel(
         return homeState.value.activeUser
     }
 
-    fun getActiveUserName() : String {
-        return homeState.value.activeUser!!.userName
-    }
-
     fun getActivePassword() : String {
         return homeState.value.activeUser!!.password
     }
@@ -59,7 +55,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.ShowChangePasswordDialog -> {
-                if (event.show == false) {
+                if (!event.show) {
                     CoroutineScope(Dispatchers.Main).launch {
                         setActiveUser(userRepository.getLoggedInUser())
                     }
@@ -67,6 +63,12 @@ class HomeViewModel(
 
                 _homeState.value = homeState.value.copy(
                     showChangePasswordDialog = event.show
+                )
+            }
+
+            is HomeEvent.ShowManageUsersDialog -> {
+                _homeState.value = homeState.value.copy(
+                    showManageUsersDialog = event.show
                 )
             }
 
