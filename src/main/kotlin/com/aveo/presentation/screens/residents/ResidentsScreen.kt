@@ -37,9 +37,9 @@ fun ResidentsScreen(
 
     val radioOptions = listOf("Unit Order", "Name Order")
 
-    val selectedValue = remember { mutableStateOf(radioOptions[0]) }
-    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
-    val onChangeState: (String) -> Unit = { selectedValue.value = it }
+    val selectedOrderValue = remember { mutableStateOf(radioOptions[0]) }
+    val isSelectedItem: (String) -> Boolean = { selectedOrderValue.value == it }
+    val onChangeState: (String) -> Unit = { selectedOrderValue.value = it }
 
     val residentsList1 = residentsViewModel.residents1.collectAsState(initial = emptyList()).value
     val residentsList2 = residentsViewModel.residents2.collectAsState(initial = emptyList()).value
@@ -47,9 +47,9 @@ fun ResidentsScreen(
     val cellWidth: (Int) -> Float = { index ->
         when (index) {
             0 -> 0.1f
-            1 -> 0.5f
-            2 -> 0.3f
-            else -> 0.1f
+            1 -> 0.6f
+            2 -> 0.75f
+            else -> 1f
         }
     }
 
@@ -75,7 +75,7 @@ fun ResidentsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 30.dp, top = 20.dp, bottom = 20.dp)
+                .padding(30.dp)
                 .background(Blue50)
                 .border(3.dp, Color.Gray)
         ) {
@@ -85,8 +85,8 @@ fun ResidentsScreen(
             ) {
                 Column() {
                     Text(
-                        modifier = Modifier.padding(start = 10.dp, end = 20.dp),
-                        text = "Resident Listing",
+                        modifier = Modifier.padding(start = 25.dp, end = 20.dp),
+                        text = "Residents Listing",
                         style = typography.h6
                     )
                 }
@@ -127,8 +127,19 @@ fun ResidentsScreen(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-               Table(1, cellWidth, residentsList1)
-               Table(2, cellWidth, residentsList2)
+               Box(modifier = Modifier
+                   .fillMaxWidth(0.5f)
+                   .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+               ) {
+                   Table(1, cellWidth, residentsList1)
+               }
+
+                Box(modifier = Modifier
+                    .fillMaxWidth(1f)
+                    .padding(end = 20.dp, bottom = 20.dp)
+                ) {
+                    Table(2, cellWidth, residentsList2)
+                }
             }
         }
     }
@@ -141,9 +152,7 @@ fun Table(
     data: List<Resident>,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth(if (tableId == 1) 0.5f else 1f)
-            .padding(start = if (tableId == 1) 20.dp else 0.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(data) { resident ->
             Row {
