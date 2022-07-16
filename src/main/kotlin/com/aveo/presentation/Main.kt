@@ -11,7 +11,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.*
 import com.aveo.di.repositoriesModule
 import com.aveo.di.viewModules
-import com.aveo.domain.repository.UserRepository
 import com.aveo.navcontroller.*
 import com.aveo.presentation.common.Screen
 import com.aveo.presentation.common.AboutDialog
@@ -19,9 +18,7 @@ import com.aveo.presentation.screens.home.HomeScreen
 import com.aveo.presentation.screens.home.HomeViewModel
 import com.aveo.presentation.screens.kitchen.KitchenScreen
 import com.aveo.presentation.screens.residents.ResidentsScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.aveo.presentation.screens.residents.ResidentsViewModel
 import org.kodein.di.DI
 import org.kodein.di.*
 
@@ -32,16 +29,16 @@ fun App() {
     val currentScreen by remember { navController.currentScreen }
     var showAbout by remember { mutableStateOf(false) }
 
-    // On startup, make sure no-one is already logged in.
-    val userRepository: UserRepository by di.instance()
-
-    CoroutineScope(Dispatchers.Main).launch {
-        val user = userRepository.getLoggedInUser()
-
-        if (user!!.loggedIn == true) {
-            userRepository.insertUser(user.userName, user.password, false)
-        }
-    }
+    // TODO: On startup, make sure no-one is already logged in.
+//    val userRepository: UserRepository by di.instance()
+//
+//    CoroutineScope(Dispatchers.Main).launch {
+//        val user = userRepository.getLoggedInUser()
+//
+//        if (user!!.loggedIn == true) {
+//            userRepository.insertUser(user.userName, user.password, false)
+//        }
+//    }
 
     MaterialTheme {
         Surface(
@@ -127,7 +124,8 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.ResidentsScreen.name) {
-            ResidentsScreen(navController)
+            val residentsViewModel: ResidentsViewModel by di.instance()
+            ResidentsScreen(residentsViewModel)
         }
 
         composable(Screen.KitchenScreen.name) {

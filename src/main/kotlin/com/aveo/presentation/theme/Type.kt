@@ -116,7 +116,7 @@ val typography = Typography(
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp,
-        color = Blue800
+        color = Color.Black
     ),
     subtitle1 = TextStyle(
         fontFamily = FontFamily.Default,

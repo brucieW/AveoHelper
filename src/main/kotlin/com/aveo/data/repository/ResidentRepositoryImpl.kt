@@ -21,8 +21,12 @@ class ResidentRepositoryImpl(
         }
     }
 
-    override fun getAllResidents(): Flow<List<Resident>> {
-        return queries.getAllResidents().asFlow().mapToList()
+    override fun getResidentsByUnit(): Flow<List<Resident>> {
+        return queries.getResidentsByUnit().asFlow().mapToList()
+    }
+
+    override fun getResidentsByName(): Flow<List<Resident>> {
+        return queries.getResidentsByName().asFlow().mapToList()
     }
 
     override suspend fun getResidentByName(lastName: String): Resident? {
@@ -31,17 +35,30 @@ class ResidentRepositoryImpl(
         }
     }
 
+    override fun getResidentsBelowUnit(unitNumber: Long): Flow<List<Resident>> {
+        return queries.getResidentsBelowUnit(unitNumber).asFlow().mapToList()
+    }
+
+    override fun getResidentsAboveUnit(unitNumber: Long): Flow<List<Resident>> {
+        return queries.getResidentsAboveUnit(unitNumber).asFlow().mapToList()
+    }
+
     override suspend fun insertResident(
         unitNumber: Long,
         firstName1: String,
         firstName2: String,
         lastName: String,
         phoneNumber: String,
-        mobileNumber: String,
-        mobileNumberId: Long
+        mobileNumber1: String,
+        mobileNumber2: String,
+        mobileNumberId: Long,
+        onResidentsCommittee: Boolean,
+        isCommissionerForDeclarations: Boolean
     ) {
         return withContext(Dispatchers.Main) {
-            queries.insertResident( unitNumber, firstName1, firstName2, lastName, phoneNumber, mobileNumber, mobileNumberId)
+            queries.insertResident( unitNumber, firstName1, firstName2, lastName,
+                                    phoneNumber, mobileNumber1, mobileNumber2, mobileNumberId,
+                                    onResidentsCommittee, isCommissionerForDeclarations)
         }
     }
 
