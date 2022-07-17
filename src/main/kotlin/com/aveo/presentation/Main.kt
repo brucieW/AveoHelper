@@ -120,7 +120,7 @@ fun CustomNavigationHost(
     NavigationHost(navController) {
         composable(Screen.HomeScreen.name) {
             val homeViewModel: HomeViewModel by di.instance()
-            HomeScreen(navController, homeViewModel)
+            HomeScreen(homeViewModel)
         }
 
         composable(Screen.ResidentsScreen.name) {
@@ -129,7 +129,7 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.KitchenScreen.name) {
-            KitchenScreen(navController)
+            KitchenScreen()
         }
 
         composable(Screen.AboutDialog.name) {

@@ -2,9 +2,7 @@ package com.aveo.presentation.screens.residents
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,22 +29,19 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun ResidentsScreen(
-    residentsViewModel: ResidentsViewModel
+    viewModel: ResidentsViewModel
 ) {
     var currentImage by remember { mutableStateOf(1) }
 
-    val radioOptions = listOf("Unit Order", "Name Order")
+    val selectedOrder by viewModel.selectedOrderValue
 
-    val selectedOrderValue = remember { mutableStateOf(radioOptions[0]) }
-    val isSelectedItem: (String) -> Boolean = { selectedOrderValue.value == it }
-    val onChangeState: (String) -> Unit = { selectedOrderValue.value = it }
-
-    val residentsList1 = residentsViewModel.residents1.collectAsState(initial = emptyList()).value
-    val residentsList2 = residentsViewModel.residents2.collectAsState(initial = emptyList()).value
+    val residents1 = viewModel.residents1.collectAsState(initial = emptyList()).value
+    val residents2 = viewModel.residents2.collectAsState(initial = emptyList()).value
+    val residentsByName = viewModel.residents3.collectAsState(initial = emptyList()).value
 
     val cellWidth: (Int) -> Float = { index ->
         when (index) {
-            0 -> 0.1f
+            0 -> 0.12f
             1 -> 0.6f
             2 -> 0.75f
             else -> 1f
@@ -91,22 +86,22 @@ fun ResidentsScreen(
                     )
                 }
 
-                radioOptions.forEach { item ->
+                viewModel.radioOptions.forEach { item ->
                     Column {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .padding(start = 20.dp)
                                 .selectable(
-                                    selected = isSelectedItem(item),
-                                    onClick = { onChangeState(item) }
+                                    selected = selectedOrder == item,
+                                    onClick = { viewModel.onOrderChange(item) }
                                 )
 
 
                         ) {
                             RadioButton(
-                                selected = isSelectedItem(item),
-                                onClick = { onChangeState(item) },
+                                selected = selectedOrder == item,
+                                onClick = { viewModel.onOrderChange(item) },
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = Blue700,
                                     unselectedColor = Blue700,
@@ -118,7 +113,6 @@ fun ResidentsScreen(
                                 text = item,
                                 style = normalText
                             )
-
                         }
                     }
                 }
@@ -131,23 +125,34 @@ fun ResidentsScreen(
                    .fillMaxWidth(0.5f)
                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
                ) {
-                   Table(1, cellWidth, residentsList1)
+                   if (selectedOrder == viewModel.radioOptions[0]) {
+                       Table(cellWidth, residents1)
+                   } else {
+                       val data = if (residentsByName.size > 69) residentsByName.subList(0, 68) else residentsByName
+                       Table(cellWidth, data)
+                   }
                }
 
                 Box(modifier = Modifier
                     .fillMaxWidth(1f)
                     .padding(end = 20.dp, bottom = 20.dp)
                 ) {
-                    Table(2, cellWidth, residentsList2)
+                    if (selectedOrder == viewModel.radioOptions[0]) {
+                        Table(cellWidth, residents2)
+                    }
+                    else {
+                        val data = if (residentsByName.size > 69) residentsByName.subList(69, residentsByName.size - 1) else emptyList()
+                        Table(cellWidth, data)
+                    }
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Table(
-    tableId: Int,
     cellWidth: (index: Int) -> Float,
     data: List<Resident>,
 ) {
@@ -155,7 +160,15 @@ fun Table(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(data) { resident ->
-            Row {
+            Row(
+//                modifier = Modifier.mouseClickable(
+//                    enabled = true,
+//                    onClickLabel = "TEst",
+//                    onClick = {
+//                        if (this.buttons.isSecondaryPressed)
+//                    }
+//                )
+            ) {
                 for (i in 0..3) {
                     Surface(
                         border = BorderStroke(1.dp, Color.LightGray),

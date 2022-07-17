@@ -13,23 +13,23 @@ CREATE TABLE resident (
     isCommissionerForDeclarations INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
-getResidentByUnitNumber:
-SELECT * FROM resident WHERE unitNumber = :unitNumber;
-
-getResidentsByName:
-SELECT * FROM resident ORDER BY lastName;
-
-getResidentsByUnit:
-SELECT * FROM resident ORDER BY unitNumber;
-
-getResidentByName:
-SELECT * FROM resident WHERE lastName = :lastName;
+getResidentsByLastName:
+SELECT * FROM resident WHERE lastName <> '' ORDER BY lastName;
 
 getResidentsBelowUnit:
 SELECT * FROM resident WHERE unitNumber < :unitNumber;
 
 getResidentsAboveUnit:
 SELECT * FROM resident WHERE unitNumber > :unitNumber;
+
+getResidentByUnitNumber:
+SELECT * FROM resident WHERE unitNumber = :unitNumber;
+
+getResidentsByUnit:
+SELECT * FROM resident ORDER BY unitNumber;
+
+getResidentByName:
+SELECT * FROM resident WHERE lastName = :lastName;
 
 insertResident:
 INSERT OR REPLACE INTO resident VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);

@@ -70,6 +70,7 @@ dependencies {
     // JUnit : JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
     testImplementation(kotlin("test-junit5"))
 }
+
 buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.1.1")
@@ -84,11 +85,17 @@ tasks.withType<KotlinCompile> {
 
 compose.desktop {
     application {
-        mainClass = "Main"
+        mainClass = "presentation.MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Exe)
+            outputBaseDir.set(project.buildDir.resolve("distrib"))
             packageName = "Aveo"
             packageVersion = "1.0.0"
+
+            windows {
+                packageVersion = "1.0.0"
+                exePackageVersion = "1.0.0"
+            }
         }
     }
 }

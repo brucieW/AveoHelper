@@ -15,24 +15,8 @@ class ResidentRepositoryImpl(
 
     private val queries = db.residentsQueries
 
-    override suspend fun getResidentByUnitNumber(unitNumber: Long): Resident? {
-        return withContext(Dispatchers.Main) {
-            queries.getResidentByUnitNumber(unitNumber).executeAsOneOrNull()
-        }
-    }
-
-    override fun getResidentsByUnit(): Flow<List<Resident>> {
-        return queries.getResidentsByUnit().asFlow().mapToList()
-    }
-
-    override fun getResidentsByName(): Flow<List<Resident>> {
-        return queries.getResidentsByName().asFlow().mapToList()
-    }
-
-    override suspend fun getResidentByName(lastName: String): Resident? {
-        return withContext(Dispatchers.Main) {
-            queries.getResidentByName(lastName).executeAsOneOrNull()
-        }
+    override fun getResidentsByLastName(): Flow<List<Resident>> {
+        return queries.getResidentsByLastName().asFlow().mapToList()
     }
 
     override fun getResidentsBelowUnit(unitNumber: Long): Flow<List<Resident>> {
@@ -41,6 +25,18 @@ class ResidentRepositoryImpl(
 
     override fun getResidentsAboveUnit(unitNumber: Long): Flow<List<Resident>> {
         return queries.getResidentsAboveUnit(unitNumber).asFlow().mapToList()
+    }
+
+    override suspend fun getResidentByUnitNumber(unitNumber: Long): Resident? {
+        return withContext(Dispatchers.Main) {
+            queries.getResidentByUnitNumber(unitNumber).executeAsOneOrNull()
+        }
+    }
+
+    override suspend fun getResidentByName(lastName: String): Resident? {
+        return withContext(Dispatchers.Main) {
+            queries.getResidentByName(lastName).executeAsOneOrNull()
+        }
     }
 
     override suspend fun insertResident(

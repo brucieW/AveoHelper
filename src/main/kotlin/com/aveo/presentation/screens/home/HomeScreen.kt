@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.aveo.navcontroller.NavController
 import com.aveo.presentation.dialogs.change_admin_password.ChangeAdminPasswordDialog
 import com.aveo.presentation.dialogs.change_password.ChangePasswordDialog
 import com.aveo.presentation.dialogs.login.LoginDialog
@@ -21,7 +20,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
     homeViewModel: HomeViewModel
 ) {
     val homeState by homeViewModel.homeState

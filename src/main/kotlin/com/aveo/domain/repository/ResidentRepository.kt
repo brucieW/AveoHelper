@@ -5,15 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface ResidentRepository {
 
+    fun getResidentsByLastName() : Flow<List<Resident>>
+
     fun getResidentsBelowUnit(unitNumber: Long) : Flow<List<Resident>>
 
     fun getResidentsAboveUnit(unitNumber: Long) : Flow<List<Resident>>
 
     suspend fun getResidentByUnitNumber(unitNumber: Long) : Resident?
-
-    fun getResidentsByUnit() : Flow<List<Resident>>
-
-    fun getResidentsByName() : Flow<List<Resident>>
 
     suspend fun getResidentByName(lastName: String) : Resident?
 
