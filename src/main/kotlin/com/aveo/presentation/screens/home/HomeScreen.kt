@@ -4,14 +4,13 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.dialogs.change_admin_password.ChangeAdminPasswordDialog
 import com.aveo.presentation.dialogs.change_password.ChangePasswordDialog
 import com.aveo.presentation.dialogs.login.LoginDialog
@@ -51,31 +50,28 @@ fun HomeScreen(
         ) {
             if (homeState.activeUser != null) {
                 if (homeState.activeUser!!.userName == "admin") {
-                    Button(
-                        onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(true)) }
-                    ) {
-                        Text( "Manage Users")
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-
-                Button(
-                    onClick = { homeViewModel.onEvent(HomeEvent.ShowChangePasswordDialog(true)) }
-                ) {
-                    Text( "Change Password")
+                    AveoButton(
+                        onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(true)) },
+                        text = "Manage Users"
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Button(
-                    onClick = { homeViewModel.onEvent(HomeEvent.LogOut)}
-                ) {
-                    Text("Log Out")
-                }
+                AveoButton(
+                    onClick = { homeViewModel.onEvent(HomeEvent.ShowChangePasswordDialog(true)) },
+                    text = "Change Password"
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AveoButton(
+                    onClick = { homeViewModel.onEvent(HomeEvent.LogOut) },
+                    text = "Log Out"
+                )
 
                 if (homeState.showChangePasswordDialog) {
-                   ChangePasswordDialog(homeViewModel)
+                    ChangePasswordDialog(homeViewModel)
                 }
 
                 if (homeState.showChangeAdminPasswordDialog) {

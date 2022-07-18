@@ -17,6 +17,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.common.AveoIconButton
 import com.aveo.presentation.di
 import com.aveo.presentation.screens.home.HomeEvent
 import com.aveo.presentation.screens.home.HomeViewModel
@@ -51,15 +52,11 @@ fun ManageUsersDialog(
                     .fillMaxWidth().padding(bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = { viewModel.showAddUserEdit(true) }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.AddCircle,
-                        contentDescription = "Add New User",
-                        tint = Blue700,
-                    )
-                }
+                AveoIconButton(
+                    onClick = { viewModel.showAddUserEdit(true) },
+                    imageVector = Icons.Filled.AddCircle,
+                    contentDescription = "Add New User",
+                )
 
                 if (showAddUserEdit) {
                     Box(
@@ -89,28 +86,19 @@ fun ManageUsersDialog(
                         focusRequester.requestFocus()
                     }
 
-                    IconButton(
-                        onClick = {
-                            viewModel.addNewUser(newUserName)
-                        },
-                        enabled = newUserEnabled
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowForward,
-                            contentDescription = "Save New User",
-                            tint = if (newUserEnabled) Blue700 else Color.Gray
-                        )
-                    }
+                    AveoIconButton(
+                        onClick = { viewModel.addNewUser(newUserName) },
+                        enabled = newUserEnabled,
+                        imageVector = Icons.Filled.ArrowForward,
+                        contentDescription = "Save New User",
+                        tint = if (newUserEnabled) Blue700 else Color.Gray
+                    )
 
-                    IconButton(
+                    AveoIconButton(
                         onClick = { viewModel.showAddUserEdit(false) },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = "Cancel Save New User",
-                            tint = Blue700
-                        )
-                    }
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Cancel Save New User"
+                    )
                 }
             }
         },
@@ -127,17 +115,12 @@ fun ManageUsersDialog(
                         .background(Blue700),
                     contentAlignment = Alignment.Center
                 ) {
-                    IconButton(
-                        onClick = {
-                            homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(false))
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Clear,
-                            contentDescription = "Close",
-                            tint = Color.White
-                        )
-                    }
+                    AveoIconButton(
+                        onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(false)) },
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = "Close",
+                        tint = Color.White
+                    )
                 }
             }
         },
@@ -170,35 +153,27 @@ fun ManageUsersDialog(
                                 text = user.userName
                             )
 
-                            IconButton(
+                            AveoIconButton(
                                 onClick = { viewModel.deleteSelectedUser() },
                                 modifier = Modifier
                                     .size(20.dp)
-                                    .fillMaxWidth(fraction = .1f)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Delete,
-                                    contentDescription = "Delete"
-                                )
-                            }
+                                    .fillMaxWidth(fraction = .1f),
+                                imageVector = Icons.Filled.Delete,
+                                contentDescription = "Delete"
+                            )
 
                             Spacer(modifier = Modifier.width(5.dp))
 
-                            IconButton(
-                                modifier = Modifier
-                                    .size(20.dp),
+                            AveoIconButton(
+                                modifier = Modifier.size(20.dp),
                                 onClick = {
                                     viewModel.setSelectedUser(user)
                                     viewModel.resetPassword()
                                 },
-                                enabled = user.password != "password"
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Refresh,
-                                    contentDescription = "Refresh"
-                                )
-                            }
-
+                                enabled = user.password != "password",
+                                imageVector = Icons.Filled.Refresh,
+                                contentDescription = "Refresh"
+                            )
                         }
                     }
                 }

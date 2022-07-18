@@ -150,9 +150,10 @@ val typography = Typography(
     ),
     button = TextStyle(
         fontFamily = FontFamily.Default,
-        fontSize = 16.sp,
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 1.25.sp
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Normal,
+        letterSpacing = 1.25.sp,
+        color = Color.White
     ),
     caption = TextStyle(
         fontFamily = FontFamily.Default,

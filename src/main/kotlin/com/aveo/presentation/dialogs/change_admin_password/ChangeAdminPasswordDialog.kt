@@ -10,6 +10,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.common.PasswordField
 import com.aveo.presentation.di
 import com.aveo.presentation.screens.home.HomeEvent
@@ -41,15 +42,14 @@ fun ChangeAdminPasswordDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(
+                AveoButton(
                     onClick = {
                         viewModel.onEvent(ChangeAdminPasswordEvent.LoginUser(userName))
                         homeViewModel.onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
                     },
-                    enabled = isValid
-                ) {
-                    Text("Change")
-                }
+                    enabled = isValid,
+                    text = "Change"
+                )
             }
         },
         title = {

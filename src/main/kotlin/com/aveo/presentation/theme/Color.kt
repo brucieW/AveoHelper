@@ -32,7 +32,7 @@ val buttonBrush = Brush.horizontalGradient(
 )
 
 val disabledBrush = Brush.horizontalGradient(
-    colors = listOf(Blue300, Blue300)
+    colors = listOf(Color.Gray, Color.Gray)
 )
 
 const val AlphaNearOpaque = 0.95f

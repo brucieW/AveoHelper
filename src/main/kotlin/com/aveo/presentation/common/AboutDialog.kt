@@ -39,15 +39,11 @@ fun AboutDialog(
                         .size(24.dp)
                         .border(1.dp, Color.Black)
                 ) {
-                    IconButton(
-                        onClick = { onClose() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = "Close"
-                        )
-                    }
-
+                    AveoIconButton(
+                        onClick = { onClose() },
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Close"
+                    )
                 }
             }
         },

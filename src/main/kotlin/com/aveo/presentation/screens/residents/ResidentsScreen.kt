@@ -20,11 +20,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aveo.db.Resident
+import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.screens.home.BackgroundImage
-import com.aveo.presentation.theme.Blue50
-import com.aveo.presentation.theme.Blue700
-import com.aveo.presentation.theme.normalText
-import com.aveo.presentation.theme.typography
+import com.aveo.presentation.theme.*
 import kotlinx.coroutines.delay
 
 @Composable
@@ -116,6 +114,14 @@ fun ResidentsScreen(
                         }
                     }
                 }
+
+                AveoButton(
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                    ,
+                    onClick = {},
+                    text = "Load Residents File"
+                )
             }
 
             Row(

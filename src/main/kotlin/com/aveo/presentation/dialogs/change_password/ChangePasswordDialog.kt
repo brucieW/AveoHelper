@@ -10,6 +10,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.common.PasswordField
 import com.aveo.presentation.di
 import com.aveo.presentation.screens.home.HomeEvent
@@ -37,25 +38,23 @@ fun ChangePasswordDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(
+                AveoButton(
                     onClick = {
                         viewModel.onEvent(ChangePasswordEvent.ChangePassword)
                         homeViewModel.onEvent(HomeEvent.ShowChangePasswordDialog(false))
                     },
-                    enabled = state.isValid
-                ) {
-                    Text("Change")
-                }
+                    enabled = state.isValid,
+                    text = "Change"
+                )
 
                 Spacer(modifier = Modifier.width(20.dp))
 
-                Button(
+                AveoButton(
                     onClick = {
                         homeViewModel.onEvent(HomeEvent.ShowChangePasswordDialog(false))
                     },
-                ) {
-                    Text("Cancel")
-                }
+                    text = "Cancel"
+                )
             }
         },
         title = {

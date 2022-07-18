@@ -13,6 +13,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.common.NormalField
 import com.aveo.presentation.common.PasswordField
 import com.aveo.presentation.di
@@ -59,15 +60,14 @@ fun NormalLogin(
                     ,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Button(
+                    AveoButton(
                         onClick = {
                             viewModel.onEvent(LoginEvent.LoginUser(state.userName, state.password))
                             homeViewModel.onEvent(HomeEvent.LoginUser(state.userName))
                         },
-                        enabled = state.isValid
-                    ) {
-                        Text("Login")
-                    }
+                        enabled = state.isValid,
+                        text = "Login"
+                    )
                 }
             },
             title = {
