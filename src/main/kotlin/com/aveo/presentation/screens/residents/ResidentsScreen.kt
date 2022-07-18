@@ -58,7 +58,7 @@ fun ResidentsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 70.dp),
+            .padding(top = 40.dp),
     ) {
         Crossfade(
             targetState = currentImage.toString(),
