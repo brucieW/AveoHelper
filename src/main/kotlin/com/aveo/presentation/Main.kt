@@ -1,6 +1,7 @@
 package com.aveo.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -54,14 +55,15 @@ fun App() {
             modifier = Modifier.background(color = MaterialTheme.colors.background)
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 NavigationRail(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
                         .fillMaxWidth()
-                        .height(40.dp),
+                        .height(40.dp)
+                        .border(3.dp, Color.DarkGray)
+                    ,
                     backgroundColor = Color.LightGray,
                     elevation = 10.dp
                 ) {
@@ -98,7 +100,6 @@ fun App() {
                                     .onPointerEvent(PointerEventType.Exit) {
                                         showPopup = false
                                         popupPosition = IntOffset(0,0)
-                                        val position = it.changes.last().position
                                     },
                                 selected = currentScreen == screen.name,
                                 icon = {

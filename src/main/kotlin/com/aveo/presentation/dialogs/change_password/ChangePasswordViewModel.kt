@@ -51,7 +51,7 @@ class ChangePasswordViewModel(
             }
 
             is ChangePasswordEvent.ChangePassword -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val user = homeViewModel.getActiveUser()
                     repository.insertUser(user!!.userName, state.value.newPassword, user.loggedIn == true)
                     state.value = state.value.copy(

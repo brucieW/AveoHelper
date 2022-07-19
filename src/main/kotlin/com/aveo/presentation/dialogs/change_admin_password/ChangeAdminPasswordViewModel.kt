@@ -32,7 +32,7 @@ class ChangeAdminPasswordViewModel(
             }
 
             is ChangeAdminPasswordEvent.LoginUser -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     repository.insertUser(event.userName, password.value, true)
                 }
             }

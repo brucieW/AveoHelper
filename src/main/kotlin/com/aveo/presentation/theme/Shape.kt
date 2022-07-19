@@ -11,3 +11,4 @@ val shapes = Shapes(
 )
 
 val buttonShape = RoundedCornerShape(50.dp)
+val squareShape = RoundedCornerShape(0.dp)

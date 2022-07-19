@@ -37,20 +37,20 @@ class ManageUsersViewModel(
     }
 
     fun addNewUser(userName: String) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repository.insertUser(userName, "password", false)
             showAddUserEdit(false)
         }
     }
 
     fun deleteSelectedUser() {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repository.deleteUser(selectedUser.value!!.userName)
         }
     }
 
     fun resetPassword() {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repository.insertUser(selectedUser.value!!.userName, "password",
                 selectedUser.value!!.loggedIn == true
             )

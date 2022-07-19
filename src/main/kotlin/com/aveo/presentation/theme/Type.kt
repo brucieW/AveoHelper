@@ -22,7 +22,7 @@ val warningTitle = TextStyle(
 
 val dialogTitle = TextStyle(
     fontFamily = FontFamily.Default,
-    fontSize = 22.sp,
+    fontSize = 18.sp,
     fontWeight = FontWeight.Bold,
     color = Color.Black
 )

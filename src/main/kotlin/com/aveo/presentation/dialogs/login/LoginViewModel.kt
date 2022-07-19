@@ -15,7 +15,7 @@ class LoginViewModel(
     private val repository = userRepository
 
     fun init() {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val user = repository.getLoggedInUser()
 
             if (user == null) {
@@ -63,7 +63,7 @@ class LoginViewModel(
             }
 
             is LoginEvent.LoginUser -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val user = repository.getUser(event.userName)
 
                     if (user != null && user.userName == state.value.userName &&

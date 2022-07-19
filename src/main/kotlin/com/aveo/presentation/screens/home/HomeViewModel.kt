@@ -14,7 +14,7 @@ class HomeViewModel(
     val homeState = _homeState
 
     init {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             setActiveUser(userRepository.getLoggedInUser())
         }
     }
@@ -48,7 +48,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.SaveAdminPassword -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     userRepository.insertUser("admin", event.password, true)
                     onEvent(HomeEvent.ShowChangeAdminPasswordDialog(false))
                 }
@@ -56,7 +56,7 @@ class HomeViewModel(
 
             is HomeEvent.ShowChangePasswordDialog -> {
                 if (!event.show) {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         setActiveUser(userRepository.getLoggedInUser())
                     }
                 }
@@ -73,7 +73,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.LogOut -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val user = userRepository.getLoggedInUser()
 
                     if (user != null && user.loggedIn == true) {
@@ -84,7 +84,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.LoginUser -> {
-                CoroutineScope(Dispatchers.Main).launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val user = userRepository.getLoggedInUser()
                     setActiveUser(user)
 

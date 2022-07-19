@@ -23,7 +23,7 @@ import com.aveo.db.Resident
 import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.screens.home.BackgroundImage
 import com.aveo.presentation.theme.*
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 
 @Composable
 fun ResidentsScreen(
@@ -36,6 +36,8 @@ fun ResidentsScreen(
     val residents1 = viewModel.residents1.collectAsState(initial = emptyList()).value
     val residents2 = viewModel.residents2.collectAsState(initial = emptyList()).value
     val residentsByName = viewModel.residents3.collectAsState(initial = emptyList()).value
+
+    val loadDataEnabled by viewModel.loadDataEnabled
 
     val cellWidth: (Int) -> Float = { index ->
         when (index) {
@@ -116,38 +118,41 @@ fun ResidentsScreen(
                 }
 
                 AveoButton(
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                    ,
-                    onClick = {},
-                    text = "Load Residents File"
+                    modifier = Modifier.padding(start = 30.dp),
+                    onClick = { viewModel.loadResidentsFile() },
+                    text = "Load Residents File",
+                    enabled = loadDataEnabled
                 )
             }
 
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-               Box(modifier = Modifier
-                   .fillMaxWidth(0.5f)
-                   .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
-               ) {
-                   if (selectedOrder == viewModel.radioOptions[0]) {
-                       Table(cellWidth, residents1)
-                   } else {
-                       val data = if (residentsByName.size > 69) residentsByName.subList(0, 68) else residentsByName
-                       Table(cellWidth, data)
-                   }
-               }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                ) {
+                    if (selectedOrder == viewModel.radioOptions[0]) {
+                        Table(cellWidth, residents1)
+                    } else {
+                        val data = if (residentsByName.size > 69) residentsByName.subList(0, 68) else residentsByName
+                        Table(cellWidth, data)
+                    }
+                }
 
-                Box(modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .padding(end = 20.dp, bottom = 20.dp)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .padding(end = 20.dp, bottom = 20.dp)
                 ) {
                     if (selectedOrder == viewModel.radioOptions[0]) {
                         Table(cellWidth, residents2)
-                    }
-                    else {
-                        val data = if (residentsByName.size > 69) residentsByName.subList(69, residentsByName.size - 1) else emptyList()
+                    } else {
+                        val data = if (residentsByName.size > 69) residentsByName.subList(
+                            69,
+                            residentsByName.size - 1
+                        ) else emptyList()
                         Table(cellWidth, data)
                     }
                 }
@@ -180,6 +185,7 @@ fun Table(
                         border = BorderStroke(1.dp, Color.LightGray),
                         contentColor = Color.Transparent,
                         modifier = Modifier.fillMaxSize(cellWidth(i))
+
                     ) {
                         val value = when (i) {
                             0 -> getAnnotatedString(resident.unitNumber.toString())
@@ -193,7 +199,8 @@ fun Table(
                             text = value,
                             fontSize = 10.sp,
                             textAlign = if (i == 1) TextAlign.Left else TextAlign.Center,
-                            modifier = Modifier.padding(5.dp),
+                            modifier = Modifier.padding(5.dp)
+                                .background(if (resident.unitNumber in 89..124) Blue100 else Color.White, squareShape),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -205,12 +212,13 @@ fun Table(
     }
 }
 
-private fun getAnnotatedString(value: String) : AnnotatedString {
+private fun getAnnotatedString(value: String): AnnotatedString {
     val builder = AnnotatedString.Builder(" " + value)
     builder.addStyle(SpanStyle(fontWeight = FontWeight.ExtraBold), 0, 1)
 
     return builder.toAnnotatedString()
 }
+
 private fun getFormattedName(resident: Resident): AnnotatedString {
     val builder = AnnotatedString.Builder()
 

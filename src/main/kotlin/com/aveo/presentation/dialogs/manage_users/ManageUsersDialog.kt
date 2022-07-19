@@ -18,6 +18,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.aveo.presentation.common.AveoIconButton
+import com.aveo.presentation.common.DialogTitle
 import com.aveo.presentation.di
 import com.aveo.presentation.screens.home.HomeEvent
 import com.aveo.presentation.screens.home.HomeViewModel
@@ -103,26 +104,10 @@ fun ManageUsersDialog(
             }
         },
         title = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Manage Users")
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(Blue700),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AveoIconButton(
-                        onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(false)) },
-                        imageVector = Icons.Filled.Clear,
-                        contentDescription = "Close",
-                        tint = Color.White
-                    )
-                }
-            }
+            DialogTitle(
+                "Manage Users",
+                onClose = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(false)) }
+            )
         },
         text = {
             Box(
