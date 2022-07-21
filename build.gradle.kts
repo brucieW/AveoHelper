@@ -6,6 +6,7 @@ plugins {
     val kotlinVersion = "1.6.10"
     kotlin("jvm") version kotlinVersion
     kotlin("kapt") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
     id("org.jetbrains.compose") version "1.1.0"
     id("com.squareup.sqldelight") version "1.5.3"
 }
@@ -25,9 +26,9 @@ val sqlDelightVersion by extra("1.5.3")
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     // Module dependencies
-//    implementation(project(":data"))
     implementation("javax.inject:javax.inject:1")
 
 //    // Dagger : A fast dependency injector for Android and Java.
@@ -37,6 +38,19 @@ dependencies {
 
     // KODEIN
     implementation("org.kodein.di:kodein-di:7.12.0")
+
+    // SQL DElight
+    implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:$sqlDelightVersion")
+    implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
+    implementation("mysql:mysql-connector-java:8.0.29")
+
+    // Excel
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
+
+    // Logging
+    implementation("com.ToxicBakery.logging:arbor-jvm:1.37.80")
 
     /**
      * Testing Dependencies
@@ -53,21 +67,6 @@ dependencies {
 
     // Expekt : An assertion library for Kotlin
     testImplementation("com.github.theapache64:expekt:1.0.0")
-
-    // SQL DElight
-    implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-    implementation("com.squareup.sqldelight:coroutines-extensions-jvm:$sqlDelightVersion")
-    implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
-    implementation("mysql:mysql-connector-java:8.0.29")
-
-    // Excel
-    implementation("org.apache.poi:poi-ooxml:5.2.2")
-    implementation("org.apache.poi:poi-ooxml:5.2.2")
-
-    // Logging
-    implementation("com.ToxicBakery.logging:arbor-jvm:1.37.80")
-
-    // JUnit
 
     // Kotlinx Coroutines Test : Coroutines support libraries for Kotlin
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2")

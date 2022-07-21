@@ -88,10 +88,12 @@ class HomeViewModel(
                     val user = userRepository.getLoggedInUser()
                     setActiveUser(user)
 
-                    if (user!!.userName == "admin" && user.password == "admin") {
-                        onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true))
-                    } else if (user.password == "password") {
-                        onEvent(HomeEvent.ShowChangePasswordDialog(true))
+                    if (user != null) {
+                        if (user.userName == "admin" && user.password == "admin") {
+                            onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true))
+                        } else if (user.password == "password") {
+                            onEvent(HomeEvent.ShowChangePasswordDialog(true))
+                        }
                     }
                 }
             }

@@ -76,9 +76,10 @@ class UserRepositoryImpl(
                         "    firstName2 TEXT  DEFAULT '',\n" +
                         "    lastName TEXT DEFAULT '',\n" +
                         "    phoneNumber TEXT DEFAULT '',\n" +
-                        "    mobileNumber1 TEXT DEFAULT '',\n" +
-                        "    mobileNumber2 TEXT DEFAULT '',\n" +
-                        "    mobileNumberId INTEGER DEFAULT 0,\n" +
+                        "    mobileNumber TEXT DEFAULT '',\n" +
+                        "    phoneNumberId TEXT DEFAULT '',\n" +
+                        "    email TEXT DEFAULT '',\n" +
+                        "    isIndependentLiving INTEGER DEFAULT 0,\n" +
                         "    onResidentsCommittee INTEGER DEFAULT 0,\n" +
                         "    isCommissionerForDeclarations INTEGER DEFAULT 0\n" +
                         ")", 0, null
@@ -93,8 +94,18 @@ class UserRepositoryImpl(
 
                 val residentRepository: ResidentRepository by di.instance()
 
-                for (i in 1L..138L) {
-                    residentRepository.insertResident(i)
+                for (i in 1..88) {
+                    residentRepository.insertResident(i.toString())
+                }
+
+                for (i in 89..124) {
+                    residentRepository.insertResident(i.toString(), isIndependentLiving = false)
+                }
+
+//                residentRepository.insertResident("100A", isIndependentLiving = false)
+
+                for (i in 125..138) {
+                    residentRepository.insertResident(i.toString())
                 }
             }
         }

@@ -7,26 +7,25 @@ interface ResidentRepository {
 
     fun getResidentsByLastName() : Flow<List<Resident>>
 
-    fun getResidentsBelowUnit(unitNumber: Long) : Flow<List<Resident>>
+    fun getResidentsBelowUnit(unitNumber: String) : Flow<List<Resident>>
 
-    fun getResidentsAboveUnit(unitNumber: Long) : Flow<List<Resident>>
+    fun getResidentsAboveUnit(unitNumber: String) : Flow<List<Resident>>
 
-    suspend fun getResidentByUnitNumber(unitNumber: Long) : Resident?
+    suspend fun getResidentByUnitNumber(unitNumber: String) : Resident?
 
     suspend fun getResidentByName(lastName: String) : Resident?
 
     suspend fun insertResident(
-        unitNumber: Long,
+        unitNumber: String,
         firstName1: String = "",
         firstName2: String = "",
         lastName: String = "",
         phoneNumber: String = "",
-        mobileNumber1: String = "",
-        mobileNumber2: String = "",
-        mobileNumberId: Long = 0,
+        mobileNumber: String = "",
+        phoneNumberId: String = "",
+        email: String = "",
+        isIndependentLiving: Boolean = true,
         onResidentsCommittee: Boolean = false,
         isCommissionerForDeclarations: Boolean = false
     )
-
-    suspend fun deleteResidentByUnitNumber(id: Long)
 }

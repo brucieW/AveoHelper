@@ -17,8 +17,8 @@ class ResidentsViewModel(
 
     var selectedOrderValue = mutableStateOf(radioOptions[0])
 
-    var residents1 = residentRepository.getResidentsBelowUnit(70L)
-    var residents2 = residentRepository.getResidentsAboveUnit(69L)
+    var residents1 = residentRepository.getResidentsBelowUnit("70")
+    var residents2 = residentRepository.getResidentsAboveUnit("69")
 
     var residents3 = residentRepository.getResidentsByLastName()
 
@@ -56,15 +56,16 @@ class ResidentsViewModel(
     }
 
     private suspend fun fillData(row: Row, offset: Int) {
-        val unitNumber: Double
+        val unitNumber: String
 
         try {
-            unitNumber = row.getCell(offset).numericCellValue
+            val item = row.getCell(offset).numericCellValue
+            unitNumber = item.toString()
         } catch (e: IllegalStateException) {
             return
         }
 
-        if (unitNumber.toLong() == 0L) {
+        if (unitNumber.isEmpty()) {
             return
         }
 
@@ -90,6 +91,16 @@ class ResidentsViewModel(
         val lastName = names[0]
         val firstNames = if (names.size == 1) listOf("") else names[1].split("&")
         val phoneNumber = row.getCell(2).stringCellValue
+
+        var phoneId: String
+
+        try {
+            val item = row.getCell(3).numericCellValue
+            phoneId = item.toString()
+        } catch (e: IllegalStateException) {
+            phoneId = row.getCell(3).stringCellValue
+        }
+
         val landLine: String
         val mobile: String
 
@@ -102,13 +113,13 @@ class ResidentsViewModel(
         }
 
         residentRepository.insertResident(
-            unitNumber.toLong(),
+            unitNumber,
             firstName1 = firstNames[0],
             firstName2 = if (firstNames.size == 2) firstNames[1] else "",
             lastName = lastName,
             phoneNumber = landLine,
-            mobileNumber1 = mobile,
-            mobileNumberId = 0,
+            mobileNumber = mobile,
+            phoneNumberId = phoneId,
             onResidentsCommittee = onResidentsCommittee,
             isCommissionerForDeclarations = cfd
         )

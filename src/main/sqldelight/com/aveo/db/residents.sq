@@ -1,14 +1,15 @@
 import java.lang.Boolean;
 
 CREATE TABLE resident (
-    unitNumber INTEGER NOT NULL PRIMARY KEY,
+    unitNumber TEXT NOT NULL PRIMARY KEY,
     firstName1 TEXT NOT NULL,
     firstName2 TEXT NOT NULL,
     lastName TEXT NOT NULL,
     phoneNumber TEXT NOT NULL,
-    mobileNumber1 TEXT NOT NULL,
-    mobileNumber2 TEXT NOT NULL,
-    mobileNumberId INTEGER NOT NULL DEFAULT 0,
+    mobileNumber TEXT NOT NULL,
+    phoneNumberId TEXT NOT NULL,
+    email TEXT NOT NULL,
+    independantLiving INTEGER AS Boolean NOT NULL DEFAULT 1,
     onResidentsCommittee INTEGER AS Boolean NOT NULL DEFAULT 0,
     isCommissionerForDeclarations INTEGER AS Boolean NOT NULL DEFAULT 0
 );
@@ -32,9 +33,13 @@ getResidentByName:
 SELECT * FROM resident WHERE lastName = :lastName;
 
 insertResident:
-INSERT OR REPLACE INTO resident VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT OR REPLACE INTO resident VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
-deleteResidentByUnitNumber:
-DELETE FROM resident WHERE unitNumber = :unitNumber;
+getEmails:
+SELECT unitNumber, email FROM resident;
+
+updateEmail:
+UPDATE resident SET `email`=? WHERE unitNumber = :unitNumber;
+
 
 

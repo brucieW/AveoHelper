@@ -19,15 +19,15 @@ class ResidentRepositoryImpl(
         return queries.getResidentsByLastName().asFlow().mapToList()
     }
 
-    override fun getResidentsBelowUnit(unitNumber: Long): Flow<List<Resident>> {
+    override fun getResidentsBelowUnit(unitNumber: String): Flow<List<Resident>> {
         return queries.getResidentsBelowUnit(unitNumber).asFlow().mapToList()
     }
 
-    override fun getResidentsAboveUnit(unitNumber: Long): Flow<List<Resident>> {
+    override fun getResidentsAboveUnit(unitNumber: String): Flow<List<Resident>> {
         return queries.getResidentsAboveUnit(unitNumber).asFlow().mapToList()
     }
 
-    override suspend fun getResidentByUnitNumber(unitNumber: Long): Resident? {
+    override suspend fun getResidentByUnitNumber(unitNumber: String): Resident? {
         return withContext(Dispatchers.Main) {
             queries.getResidentByUnitNumber(unitNumber).executeAsOneOrNull()
         }
@@ -40,27 +40,24 @@ class ResidentRepositoryImpl(
     }
 
     override suspend fun insertResident(
-        unitNumber: Long,
+        unitNumber: String,
         firstName1: String,
         firstName2: String,
         lastName: String,
         phoneNumber: String,
-        mobileNumber1: String,
-        mobileNumber2: String,
-        mobileNumberId: Long,
+        mobileNumber: String,
+        phoneNumberId: String,
+        email: String,
+        isIndependentLiving: Boolean,
         onResidentsCommittee: Boolean,
         isCommissionerForDeclarations: Boolean
     ) {
         return withContext(Dispatchers.Main) {
-            queries.insertResident( unitNumber, firstName1, firstName2, lastName,
-                                    phoneNumber, mobileNumber1, mobileNumber2, mobileNumberId,
-                                    onResidentsCommittee, isCommissionerForDeclarations)
-        }
-    }
-
-    override suspend fun deleteResidentByUnitNumber(id: Long) {
-        return withContext(Dispatchers.Main) {
-            queries.deleteResidentByUnitNumber(id)
+            queries.insertResident(
+                unitNumber, firstName1, firstName2, lastName,
+                phoneNumber, mobileNumber, phoneNumberId, email,
+                isIndependentLiving, onResidentsCommittee, isCommissionerForDeclarations
+            )
         }
     }
 }

@@ -188,19 +188,22 @@ fun Table(
 
                     ) {
                         val value = when (i) {
-                            0 -> getAnnotatedString(resident.unitNumber.toString())
+                            0 -> getAnnotatedString(resident.unitNumber)
                             1 -> getFormattedName(resident)
-                            2 -> getAnnotatedString(getPhoneNumber(resident))
+                            2 -> getAnnotatedString(if (resident.phoneNumber.isNotBlank()) resident.phoneNumber else resident.mobileNumber)
                             3 -> getAnnotatedString(if (resident.lastName.isEmpty()) "" else if (resident.firstName2.isNotBlank()) "2" else "1")
                             else -> getAnnotatedString("")
                         }
+
+                        val unitNumber = resident.unitNumber
+                        val iUnitNumber = if (unitNumber == "100A") -100 else unitNumber.toInt()
 
                         Text(
                             text = value,
                             fontSize = 10.sp,
                             textAlign = if (i == 1) TextAlign.Left else TextAlign.Center,
                             modifier = Modifier.padding(5.dp)
-                                .background(if (resident.unitNumber in 89..124) Blue100 else Color.White, squareShape),
+                                .background(if (iUnitNumber == -100 || iUnitNumber in 89..124) Blue100 else Color.White, squareShape),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -248,21 +251,4 @@ private fun getFormattedName(resident: Resident): AnnotatedString {
     }
 
     return builder.toAnnotatedString()
-}
-
-private fun getPhoneNumber(resident: Resident): String {
-    var number = ""
-
-    if (resident.mobileNumberId > 0L) {
-        number = if (resident.mobileNumberId == 1L) resident.mobileNumber1
-        else resident.mobileNumber2
-    } else if (resident.mobileNumber1.isNotEmpty()) {
-        number = resident.mobileNumber1
-    } else if (resident.mobileNumber2.isNotEmpty()) {
-        number = resident.mobileNumber2
-    } else if (resident.phoneNumber.isNotEmpty()) {
-        number = resident.phoneNumber
-    }
-
-    return number
 }

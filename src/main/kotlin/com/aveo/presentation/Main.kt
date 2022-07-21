@@ -9,10 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.aveo.di.repositoriesModule
@@ -27,6 +24,12 @@ import com.aveo.presentation.screens.residents.ResidentsScreen
 import com.aveo.presentation.screens.residents.ResidentsViewModel
 import org.kodein.di.DI
 import org.kodein.di.*
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.lang.System.exit
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -35,9 +38,6 @@ fun App() {
     val navController by rememberNavController(Screen.HomeScreen.name)
     val currentScreen by remember { navController.currentScreen }
     var showAbout by remember { mutableStateOf(false) }
-    var showPopup by remember { mutableStateOf(false) }
-    var popupText by remember { mutableStateOf("") }
-    var popupPosition by remember { mutableStateOf(IntOffset(0, 0)) }
 
     // TODO: On startup, make sure no-one is already logged in.
 //    val userRepository: UserRepository by di.instance()
@@ -75,32 +75,7 @@ fun App() {
                         screens.forEach { screen ->
                             NavigationRailItem(
                                 modifier = Modifier
-                                    .padding(end = 20.dp)
-                                    .onPointerEvent(PointerEventType.Enter) {
-
-                                        // The native event will look like this:
-                                        //     java.awt.event.MouseEvent[MOUSE_MOVED,(318,30),absolute(886,301),clickCount=0] on canvas0
-                                        // so split will reveal item 3 as '(318' and item  as '30)')
-                                        val event = it.nativeEvent.toString()
-
-//                                        Arbor.d("event: $event)")
-//                                        Arbor.d("position = ${it.changes.size}, ${it.changes.last().position}")
-
-                                        val items = event.split(",")
-                                        val x = items[1].substring(1).toInt() - 20
-                                        val yItems = items[2].split(")")
-                                        val y = yItems[0].toInt() + 20
-                                        popupPosition = IntOffset(x, y)
-
-//                                        Arbor.d("Popup Position = ${popupPosition}")
-
-                                        showPopup = true
-                                        popupText = screen.label
-                                    }
-                                    .onPointerEvent(PointerEventType.Exit) {
-                                        showPopup = false
-                                        popupPosition = IntOffset(0,0)
-                                    },
+                                    .padding(end = 20.dp),
                                 selected = currentScreen == screen.name,
                                 icon = {
                                     Icon(
@@ -122,15 +97,6 @@ fun App() {
                     }
                 }
 
-                if (showPopup) {
-                   Popup(
-                        offset = popupPosition
-                    ) {
-                        Text(popupText, color = Color.White)
-                    }
-                }
-
-
                 if (showAbout) {
                     AboutDialog(onClose = { showAbout = false })
                 }
@@ -146,8 +112,25 @@ fun App() {
 }
 
 fun main() = application {
+    val file = "c:/AveoDatabase/preferences.json"
+    var preferences = Preferences()
+
+    try {
+        ObjectInputStream(FileInputStream(file)).use { stream ->
+            val item = stream.readObject()
+
+            when (item) {
+                is Preferences -> preferences = item
+            }
+        }
+    } catch (_: IOException) {
+
+    }
+
     val state = rememberWindowState(
-        position = WindowPosition(Alignment.Center)
+        placement = preferences.placement,
+        position = WindowPosition.Absolute(preferences.xPosition, preferences.yPosition),
+        size = preferences.size
     )
 
     Window(
@@ -155,7 +138,14 @@ fun main() = application {
         resizable = true,
         state = state,
         icon = painterResource("drawable/logo.png"),
-        onCloseRequest = ::exitApplication
+        onCloseRequest = {
+            preferences.placement = state.placement
+            preferences.xPosition = state.position.x
+            preferences.yPosition = state.position.y
+            preferences.size = state.size
+            ObjectOutputStream(FileOutputStream(file)).use { it -> it.writeObject(preferences) }
+            exit(0)
+        }
     ) {
 //        Arbor.sow(Seedling())
         App()
