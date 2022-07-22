@@ -3,7 +3,7 @@ package com.aveo.presentation.screens.home
 import androidx.compose.runtime.mutableStateOf
 import com.aveo.db.User
 import com.aveo.domain.repository.UserRepository
-import com.aveo.presentation.mainWindow
+import com.aveo.presentation.windowTitle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,7 +70,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.LogOut -> {
-                mainWindow!!.title = "Aveo Taringa"
+                windowTitle.value = "Aveo Taringa"
 
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = userRepository.getLoggedInUser()

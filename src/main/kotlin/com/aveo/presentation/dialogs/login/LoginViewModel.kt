@@ -2,9 +2,9 @@ package com.aveo.presentation.dialogs.login
 
 import androidx.compose.runtime.mutableStateOf
 import com.aveo.domain.repository.UserRepository
-import com.aveo.presentation.mainWindow
 import com.aveo.presentation.screens.home.HomeEvent
 import com.aveo.presentation.screens.home.HomeViewModel
+import com.aveo.presentation.windowTitle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,7 +88,7 @@ class LoginViewModel(
                     val activeUser = state.value.activeUser
 
                     repository.insertUser(activeUser!!.userName, activeUser.password, false)
-                    mainWindow!!.title = "Aveo Taringa"
+                    windowTitle.value = "Aveo Taringa"
                     clearState()
                 }
             }

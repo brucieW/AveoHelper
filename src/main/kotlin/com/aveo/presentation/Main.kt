@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -32,7 +31,7 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.System.exit
 
-var mainWindow: ComposeWindow? = null
+var windowTitle: MutableState<String> = mutableStateOf("Aveo Taringa")
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -134,7 +133,7 @@ fun main() = application {
     )
 
     Window(
-        title = "Aveo Taringa",
+        title = windowTitle.value,
         resizable = true,
         state = state,
         icon = painterResource("drawable/logo.png"),
@@ -148,7 +147,6 @@ fun main() = application {
         }
     ) {
 //        Arbor.sow(Seedling())
-        mainWindow = window
         App()
     }
 }

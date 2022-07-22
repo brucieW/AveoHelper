@@ -4,7 +4,6 @@ import com.aveo.domain.repository.UserRepository
 import com.aveo.db.AveoDatabase
 import com.aveo.db.User
 import com.aveo.di.dbDriver
-import com.aveo.domain.repository.ResidentRepository
 import com.aveo.presentation.di
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
@@ -69,44 +68,12 @@ class UserRepositoryImpl(
                         "    loggedIn INTEGER DEFAULT 0\n" +
                         ")", 0, null
             )
-            dbDriver?.execute(
-                null, "CREATE TABLE IF NOT EXISTS resident (\n" +
-                        "    unitNumber INTEGER NOT NULL PRIMARY KEY,\n" +
-                        "    firstName1 TEXT DEFAULT '',\n" +
-                        "    firstName2 TEXT  DEFAULT '',\n" +
-                        "    lastName TEXT DEFAULT '',\n" +
-                        "    phoneNumber TEXT DEFAULT '',\n" +
-                        "    mobileNumber TEXT DEFAULT '',\n" +
-                        "    phoneNumberId TEXT DEFAULT '',\n" +
-                        "    email TEXT DEFAULT '',\n" +
-                        "    isIndependentLiving INTEGER DEFAULT 0,\n" +
-                        "    onResidentsCommittee INTEGER DEFAULT 0,\n" +
-                        "    isCommissionerForDeclarations INTEGER DEFAULT 0\n" +
-                        ")", 0, null
-            )
 
             val repository: UserRepository by di.instance()
-
             val user = repository.getUser("admin")
 
             if (user == null) {
                 repository.insertUser("admin", "admin", false)
-
-                val residentRepository: ResidentRepository by di.instance()
-
-                for (i in 1..88) {
-                    residentRepository.insertResident(i.toString())
-                }
-
-                for (i in 89..124) {
-                    residentRepository.insertResident(i.toString(), isIndependentLiving = false)
-                }
-
-//                residentRepository.insertResident("100A", isIndependentLiving = false)
-
-                for (i in 125..138) {
-                    residentRepository.insertResident(i.toString())
-                }
             }
         }
     }

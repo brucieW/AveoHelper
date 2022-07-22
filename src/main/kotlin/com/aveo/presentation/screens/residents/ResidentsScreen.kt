@@ -1,7 +1,5 @@
 package com.aveo.presentation.screens.residents
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,16 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aveo.db.Resident
 import com.aveo.presentation.common.AveoButton
-import com.aveo.presentation.screens.home.BackgroundImage
+import com.aveo.presentation.common.AveoPage
 import com.aveo.presentation.theme.*
-import kotlinx.coroutines.*
 
 @Composable
 fun ResidentsScreen(
     viewModel: ResidentsViewModel
 ) {
-    var currentImage by remember { mutableStateOf(1) }
-
     val selectedOrder by viewModel.selectedOrderValue
 
     val residents1 = viewModel.residents1.collectAsState(initial = emptyList()).value
@@ -48,25 +43,7 @@ fun ResidentsScreen(
         }
     }
 
-    LaunchedEffect(key1 = Unit) {
-        while (true) {
-            delay(20000)
-            currentImage = if (currentImage == 4) 1 else ++currentImage
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 40.dp),
-    ) {
-        Crossfade(
-            targetState = currentImage.toString(),
-            animationSpec = tween(4000)
-        ) {
-            BackgroundImage(it)
-        }
-
+    AveoPage {
         Column(
             modifier = Modifier
                 .fillMaxSize()

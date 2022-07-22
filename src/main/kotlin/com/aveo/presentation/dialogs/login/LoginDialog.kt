@@ -17,7 +17,7 @@ import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.common.NormalField
 import com.aveo.presentation.common.PasswordField
 import com.aveo.presentation.di
-import com.aveo.presentation.mainWindow
+import com.aveo.presentation.windowTitle
 import org.kodein.di.instance
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -44,7 +44,7 @@ fun LoginDialog() {
                 AveoButton(
                     onClick = {
                         viewModel.onEvent(LoginEvent.LoginUser)
-                        mainWindow!!.title = "Aveo Taringa - ${state.userName}"
+                        windowTitle.value = "Aveo Taringa - ${state.userName}"
                     },
                     enabled = state.isValid,
                     text = "Login"
