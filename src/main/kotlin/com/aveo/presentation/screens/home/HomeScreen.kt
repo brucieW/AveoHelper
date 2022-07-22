@@ -51,7 +51,9 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (homeState.activeUser != null) {
+            if (homeState.activeUser == null) {
+                LoginDialog()
+            } else {
                 if (homeState.activeUser!!.userName == "admin") {
                     AveoButton(
                         onClick = { homeViewModel.onEvent(HomeEvent.ShowManageUsersDialog(true)) },
@@ -73,19 +75,17 @@ fun HomeScreen(
                     text = "Log Out"
                 )
 
-                if (homeState.showChangePasswordDialog) {
-                    ChangePasswordDialog(homeViewModel)
-                }
-
                 if (homeState.showChangeAdminPasswordDialog) {
                     ChangeAdminPasswordDialog(homeViewModel)
+                }
+
+                if (homeState.showChangePasswordDialog) {
+                    ChangePasswordDialog(homeViewModel)
                 }
 
                 if (homeState.showManageUsersDialog) {
                     ManageUsersDialog(homeViewModel)
                 }
-            } else {
-                LoginDialog(homeViewModel)
             }
         }
     }

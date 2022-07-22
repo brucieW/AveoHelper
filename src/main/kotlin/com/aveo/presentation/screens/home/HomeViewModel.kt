@@ -3,6 +3,7 @@ package com.aveo.presentation.screens.home
 import androidx.compose.runtime.mutableStateOf
 import com.aveo.db.User
 import com.aveo.domain.repository.UserRepository
+import com.aveo.presentation.mainWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +38,8 @@ class HomeViewModel(
         when (event) {
             is HomeEvent.ShowChangeAdminPasswordDialog -> {
                 _homeState.value = homeState.value.copy(
-                    showChangeAdminPasswordDialog = event.show
+                    showChangeAdminPasswordDialog = event.show,
+                    showLoginDialog = false
                 )
             }
 
@@ -55,14 +57,9 @@ class HomeViewModel(
             }
 
             is HomeEvent.ShowChangePasswordDialog -> {
-                if (!event.show) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        setActiveUser(userRepository.getLoggedInUser())
-                    }
-                }
-
                 _homeState.value = homeState.value.copy(
-                    showChangePasswordDialog = event.show
+                    showChangePasswordDialog = event.show,
+                    showLoginDialog = false
                 )
             }
 
@@ -73,6 +70,8 @@ class HomeViewModel(
             }
 
             is HomeEvent.LogOut -> {
+                mainWindow!!.title = "Aveo Taringa"
+
                 CoroutineScope(Dispatchers.IO).launch {
                     val user = userRepository.getLoggedInUser()
 
@@ -83,17 +82,28 @@ class HomeViewModel(
                 }
             }
 
+            is HomeEvent.ShowLoginDialog -> {
+                _homeState.value = homeState.value.copy(
+                    showLoginDialog = event.show
+                )
+            }
+
+            is HomeEvent.LogIn -> {
+                _homeState.value = homeState.value.copy(
+                    showLoginDialog = false
+                )
+            }
+
             is HomeEvent.LoginUser -> {
                 CoroutineScope(Dispatchers.IO).launch {
+                    userRepository.insertUser(event.userName, event.password, true)
                     val user = userRepository.getLoggedInUser()
                     setActiveUser(user)
 
-                    if (user != null) {
-                        if (user.userName == "admin" && user.password == "admin") {
-                            onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true))
-                        } else if (user.password == "password") {
-                            onEvent(HomeEvent.ShowChangePasswordDialog(true))
-                        }
+                    if (event.userName == "admin" && event.password == "admin") {
+                        onEvent(HomeEvent.ShowChangeAdminPasswordDialog(true))
+                    } else if (event.password == "password") {
+                        onEvent(HomeEvent.ShowChangePasswordDialog(true))
                     }
                 }
             }

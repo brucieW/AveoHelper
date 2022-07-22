@@ -11,7 +11,7 @@ import org.kodein.di.*
 val viewModules = DI.Module("View Modules") {
     bind<HomeViewModel> { singleton { HomeViewModel(instance()) } }
     bind<ResidentsViewModel> { singleton { ResidentsViewModel(instance()) } }
-    bind<LoginViewModel> { singleton { LoginViewModel(instance()) } }
+    bind<LoginViewModel> { singleton { LoginViewModel(instance(), instance()) } }
     bind<ChangeAdminPasswordViewModel> { singleton { ChangeAdminPasswordViewModel(instance()) } }
     bind<ChangePasswordViewModel> { singleton { ChangePasswordViewModel(instance(), instance()) } }
     bind<ManageUsersViewModel> { singleton { ManageUsersViewModel(instance()) } }

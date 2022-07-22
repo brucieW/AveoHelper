@@ -17,95 +17,74 @@ import com.aveo.presentation.common.AveoButton
 import com.aveo.presentation.common.NormalField
 import com.aveo.presentation.common.PasswordField
 import com.aveo.presentation.di
-import com.aveo.presentation.screens.home.HomeEvent
-import com.aveo.presentation.screens.home.HomeViewModel
+import com.aveo.presentation.mainWindow
 import org.kodein.di.instance
-
-@Composable
-fun LoginDialog(
-    homeViewModel: HomeViewModel,
-) {
-    val loginViewModel: LoginViewModel by di.instance()
-    val state by loginViewModel.state
-
-    loginViewModel.init()
-
-    NormalLogin(
-        show = state.showNormalLogin && !state.loginShutdown,
-        homeViewModel,
-        loginViewModel)
-}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NormalLogin(
-    show: Boolean,
-    homeViewModel: HomeViewModel,
-    viewModel: LoginViewModel
-) {
-    if (show) {
-        val state by viewModel.state
-        val focusRequester = remember { FocusRequester() }
+fun LoginDialog() {
+    val viewModel: LoginViewModel by di.instance()
+    val state by viewModel.state
+    val focusRequester = remember { FocusRequester() }
 
-        AlertDialog(
-            modifier = Modifier
-                .size(250.dp, 270.dp)
-                .border(width = 4.dp, color = Color.Gray),
-            onDismissRequest = {},
-            buttons = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 10.dp)
-                    ,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    AveoButton(
-                        onClick = {
-                            viewModel.onEvent(LoginEvent.LoginUser(state.userName, state.password))
-                            homeViewModel.onEvent(HomeEvent.LoginUser(state.userName))
-                        },
-                        enabled = state.isValid,
-                        text = "Login"
-                    )
+    viewModel.init()
+
+    AlertDialog(
+        modifier = Modifier
+            .size(250.dp, 270.dp)
+            .border(width = 4.dp, color = Color.Gray),
+        onDismissRequest = {},
+        buttons = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                AveoButton(
+                    onClick = {
+                        viewModel.onEvent(LoginEvent.LoginUser)
+                        mainWindow!!.title = "Aveo Taringa - ${state.userName}"
+                    },
+                    enabled = state.isValid,
+                    text = "Login"
+                )
+            }
+        },
+        title = {
+            Text("Please Login")
+        },
+        text = {
+            Column(
+                modifier = Modifier.padding(top = 5.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                NormalField(
+                    modifier = Modifier.focusRequester(focusRequester),
+                    state.userName,
+                    "User Name",
+                    onChange = { viewModel.onEvent(LoginEvent.ChangeUserName(it)) }
+                )
+
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
                 }
-            },
-            title = {
-                Text("Please Login")
-            },
-            text = {
-                Column(
-                    modifier = Modifier.padding(top = 5.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    NormalField(
-                        modifier = Modifier.focusRequester(focusRequester),
-                        state.userName,
-                        "User Name",
-                        onChange = { viewModel.onEvent(LoginEvent.ChangeUserName(it)) }
+
+                PasswordField(
+                    value = state.password,
+                    onChange = { viewModel.onEvent(LoginEvent.ChangePassword(it)) },
+                    onSetVisible = { viewModel.onEvent(LoginEvent.SetPasswordVisible) },
+                    passwordVisible = state.passwordVisible
+                )
+
+                if (state.errorText.isNotBlank()) {
+                    Text(
+                        text = state.errorText,
+                        color = Color.Red
                     )
-
-                        LaunchedEffect(Unit) {
-                            focusRequester.requestFocus()
-                        }
-
-                    PasswordField(
-                        value = state.password,
-                        onChange = { viewModel.onEvent(LoginEvent.ChangePassword(it)) },
-                        onSetVisible = { viewModel.onEvent(LoginEvent.SetPasswordVisible) },
-                        passwordVisible = state.passwordVisible
-                    )
-
-                    if (state.errorText.isNotBlank()) {
-                        Text(
-                            text = state.errorText,
-                            color = Color.Red
-                        )
-                    }
                 }
             }
-        )
-    }
+        }
+    )
 }
-

@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,8 @@ import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.System.exit
+
+var mainWindow: ComposeWindow? = null
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -91,7 +94,6 @@ fun App() {
                                         navController.navigate(screen.name)
                                     }
                                 }
-
                             )
                         }
                     }
@@ -117,9 +119,7 @@ fun main() = application {
 
     try {
         ObjectInputStream(FileInputStream(file)).use { stream ->
-            val item = stream.readObject()
-
-            when (item) {
+            when (val item = stream.readObject()) {
                 is Preferences -> preferences = item
             }
         }
@@ -148,6 +148,7 @@ fun main() = application {
         }
     ) {
 //        Arbor.sow(Seedling())
+        mainWindow = window
         App()
     }
 }

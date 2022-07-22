@@ -2,30 +2,36 @@ package com.aveo.presentation.dialogs.login
 
 import androidx.compose.runtime.mutableStateOf
 import com.aveo.domain.repository.UserRepository
+import com.aveo.presentation.mainWindow
+import com.aveo.presentation.screens.home.HomeEvent
+import com.aveo.presentation.screens.home.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    userRepository: UserRepository
+    val homeViewModel: HomeViewModel,
+    val repository: UserRepository
 ) {
     private val _state = mutableStateOf(LoginState())
     val state = _state
 
-    private val repository = userRepository
-
     fun init() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val user = repository.getLoggedInUser()
+        if (!state.value.isLoggedIn) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val user = repository.getLoggedInUser()
 
-            if (user == null) {
-                _state.value = state.value.copy(
-                    showNormalLogin = true
-                )
-            } else if (user.userName == "admin" && user.password == "admin") {
-                _state.value = state.value.copy(
-                    showChangeAdminPassword = true
-                )
+                if (user == null) {
+                    val adminUser = repository.getUser("admin")
+                    _state.value = state.value.copy(
+                        showNormalLogin = true,
+                        isFirstLogin = adminUser!!.password == "admin"
+                    )
+                } else if (user.userName == "admin" && user.password == "admin") {
+                    _state.value = state.value.copy(
+                        showChangeAdminPassword = true
+                    )
+                }
             }
         }
     }
@@ -64,31 +70,45 @@ class LoginViewModel(
 
             is LoginEvent.LoginUser -> {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val user = repository.getUser(event.userName)
+                    val user = repository.getUser(state.value.userName)
 
-                    if (user != null && user.userName == state.value.userName &&
-                                                user.password == state.value.password) {
-                        repository.setLoggedInUser(user.userName)
+                    if (user == null || user.password != state.value.password) {
                         _state.value = state.value.copy(
-                            userName = "",
-                            password = "",
-                            showNormalLogin = false
+                            errorText = "Invalid user/password"
                         )
                     } else {
-                        _state.value = state.value.copy(
-                            errorText = "User name/password is invalid"
-                        )
+                        homeViewModel.onEvent(HomeEvent.LoginUser(user.userName, user.password))
+                        clearState()
                     }
+                }
+            }
+
+            is LoginEvent.LogoutUser -> {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val activeUser = state.value.activeUser
+
+                    repository.insertUser(activeUser!!.userName, activeUser.password, false)
+                    mainWindow!!.title = "Aveo Taringa"
+                    clearState()
                 }
             }
         }
     }
 
-    private fun checkValid() {
-        val isValid = state.value.userName.isNotBlank() &&
-                        state.value.password.isNotBlank()
+    private fun clearState() {
         _state.value = state.value.copy(
-            isValid = isValid
+            activeUser = null,
+            isLoggedIn = false,
+            userName = "",
+            password = "",
+            showNormalLogin = false,
+            showChangeAdminPassword = false
+        )
+    }
+
+    private fun checkValid() {
+        _state.value = state.value.copy(
+            isValid = state.value.userName.isNotBlank() && state.value.password.isNotBlank()
         )
     }
 }

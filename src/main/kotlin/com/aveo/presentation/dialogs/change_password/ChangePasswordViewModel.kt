@@ -31,7 +31,8 @@ class ChangePasswordViewModel(
             }
 
             is ChangePasswordEvent.NewPasswordChanged -> {
-                val error = if (event.password == homeViewModel.getActivePassword() || event.password == "admin") "Invalid new password" else ""
+                val error = if (event.password == homeViewModel.getActivePassword() ||
+                    event.password == "admin" || event.password == "password") "Invalid new password" else ""
                 _state.value = state.value.copy(
                     newPassword = event.password,
                     isValid = event.password.isNotEmpty() && error.isEmpty(),
